@@ -1,5 +1,7 @@
 # News aggregator and reading list
 
+Here you can find the app deployed online on Heroku: https://read-it-news-aggregator-app.herokuapp.com/
+
 Built from scratch in a 6 day long group project using:
 
 * Vue.js
