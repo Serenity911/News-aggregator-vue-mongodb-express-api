@@ -13,13 +13,10 @@ const NytApiKey = apiKeys.NytApiKey;
 // );
 
 const nodeFetch = function() {
-  console.log("does it enter here?before router");
-
   const router = express.Router();
 
   router.get("/guardian/section/:section", (req, res) => {
     const section = req.params.section;
-    console.log("does it enter here after the /guardian?" + new Date());
     fetch(
       `https://content.guardianapis.com/search?section=${section}&api-key=${GuardianApiKey}`
     )
@@ -32,14 +29,22 @@ const nodeFetch = function() {
 
   router.get("/nyt/section/:section", (req, res) => {
     const section = req.params.section;
-    console.log("does it enter here after the /nyt?" + new Date());
-
     fetch(
       `https://api.nytimes.com/svc/news/v3/content/all/${section}.json?api-key=${NytApiKey}`
     )
       .then(response => response.json())
       .then(data => {
         const result = data.results;
+        return res.json(result);
+      });
+  });
+
+  router.get("/guardian/article/*", (req, res) => {
+    const articleApi = req.params[0];
+    fetch(`${articleApi}?&show-fields=body&api-key=${GuardianApiKey}`)
+      .then(response => response.json())
+      .then(data => {
+        const result = data.response.content;
         return res.json(result);
       });
   });
