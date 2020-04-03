@@ -5,12 +5,6 @@ const apiKeys = require("./api_key");
 
 const GuardianApiKey = apiKeys.GuardianApiKey;
 const NytApiKey = apiKeys.NytApiKey;
-// const section = "business";
-
-// // console.log(apiKeys.GuardianApiKey);
-// console.log(
-//   `https://content.guardianapis.com/search?section=${section}&api-key=${GuardianApiKey}`
-// );
 
 const nodeFetch = function() {
   const router = express.Router();
@@ -45,6 +39,16 @@ const nodeFetch = function() {
       .then(response => response.json())
       .then(data => {
         const result = data.response.content;
+        return res.json(result);
+      });
+  });
+
+  router.get("/guardian/sections", (req, res) => {
+    const articleApi = req.params[0];
+    fetch(`https://content.guardianapis.com/sections?api-key=${GuardianApiKey}`)
+      .then(response => response.json())
+      .then(data => {
+        const result = data.response;
         return res.json(result);
       });
   });
