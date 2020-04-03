@@ -4,7 +4,7 @@ const express = require("express");
 const apiKeys = require("./api_key");
 
 const GuardianApiKey = apiKeys.GuardianApiKey;
-const section = "business";
+// const section = "business";
 
 // // console.log(apiKeys.GuardianApiKey);
 // console.log(
@@ -16,7 +16,8 @@ const nodeFetch = function() {
 
   const router = express.Router();
 
-  router.get("/guardian", (req, res) => {
+  router.get("/guardian/section/:section", (req, res) => {
+    const section = req.params.section;
     console.log("does it enter here after the /guardian?" + new Date());
     fetch(
       `https://content.guardianapis.com/search?section=${section}&api-key=${GuardianApiKey}`
