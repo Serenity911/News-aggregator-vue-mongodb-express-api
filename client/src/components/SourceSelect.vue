@@ -40,7 +40,7 @@ li {
   cursor: pointer;
   border: 8px solid black;
   border-radius: 15px;
-  width: 40%;
+  width: 40rem;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 10px;
