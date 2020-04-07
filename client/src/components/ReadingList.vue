@@ -231,6 +231,13 @@ p {
   background-color: rgba(255, 255, 255, 0.25);
 }
 
+.category-search {
+  color: aliceblue;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+
 a {
   background-color: transparent;
   color: #b242bc;
@@ -243,10 +250,12 @@ a {
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+  min-width: 4rem;
+  justify-items: center;
 }
 
 a:hover {
-  background-color: #b242bc;
+  background-color: #b242bca9;
   color: #052049;
 }
 
@@ -256,6 +265,7 @@ a:hover {
   max-height: 27px;
   opacity: 0.4;
   margin: 10%;
+  color: aliceblue;
 }
 
 .heading {
@@ -279,7 +289,7 @@ select {
   grid-column: 1/3;
   align-self: end;
   margin-bottom: 8%;
-  grid-column-gap: 20%;
+  grid-column-gap: 1rem;
 }
 
 header {
