@@ -8,10 +8,11 @@
     <div class="sections" v-for="section in localSections" >
       <h2>{{ section }}</h2>
       <section class="card"  >
-        <div  :class="contentCardClass(article)" v-for="(article, index) in localArticles[section]" @mouseover.self="cardMouseOver(section + index)" @mouseleave.self="cardMouseLeave">
+        <!-- <div  :class="contentCardClass(article)" v-for="(article, index) in localArticles[section]" @mouseover.self="cardMouseOver(section + index)" @mouseleave.self="cardMouseLeave"> -->
+        <div  :class="contentCardClass(article)" v-for="(article, index) in localArticles[section]">
           <h3 >{{ article[`${localTitle}`] }}</h3>
-
-          <div class="hoveredNav" v-if="cardOver === section + index">
+          <!-- <div class="hoveredNav" v-if="cardOver === section + index"> -->
+          <div class="hoveredNav">
             <button  :value="article" v-on:click="addToCheckedArticles(article)" type="button" name="select" value="select">{{checkStatusOfArticle(article)}}</button>
 
             <button type="button" name="button" v-on:click="handleShowArticle(article)" :value="article">Read</button>
@@ -25,8 +26,8 @@
 </template>
 
 <script>
-import {eventBus} from '../main'
-import NewsService from '../services/NewsService'
+import { eventBus } from "../main";
+import NewsService from "../services/NewsService";
 
 export default {
   name: "select-article-form",
@@ -37,98 +38,102 @@ export default {
       localSections: this.sections,
       localTitle: this.title,
       cardOver: false
-
-    }
+    };
   },
-  props: ['articles', 'sections', 'title', 'sourceSelected'],
+  props: ["articles", "sections", "title", "sourceSelected"],
   // computed: {
   //
   // },
   watch: {
     title: function() {
-      this.localTitle = this.title
+      this.localTitle = this.title;
     },
     sections: function() {
-      this.localSections = this.sections
+      this.localSections = this.sections;
     }
   },
   methods: {
     handleSubmit() {
-      event.preventDefault()
+      event.preventDefault();
       if (this.checkedArticles.length > 0) {
         if (this.sourceSelected === "nyt") {
-          this.checkedArticles.forEach(item => item.section = item.section.toLowerCase())
+          this.checkedArticles.forEach(
+            item => (item.section = item.section.toLowerCase())
+          );
         }
 
-        eventBus.$emit('toggle-reading-list', this.checkedArticles)
-        this.checkedArticles = []
+        eventBus.$emit("toggle-reading-list", this.checkedArticles);
+        this.checkedArticles = [];
       }
     },
     isClickable() {
       if (this.checkedArticles.length > 0) {
-        return "clickable"
-      }
-      else {
-        return "inactive"
+        return "clickable";
+      } else {
+        return "inactive";
       }
     },
-    handleShowArticle(item){
+    handleShowArticle(item) {
       if (this.sourceSelected === "guardian") {
-        eventBus.$emit('toggle-show-article', item)
-      }
-      else {
-        window.open(item.url)
+        eventBus.$emit("toggle-show-article", item);
+      } else {
+        window.open(item.url);
       }
     },
     cardMouseOver(index) {
-      this.cardOver = index
+      this.cardOver = index;
     },
     cardMouseLeave() {
-      this.cardOver = false
+      this.cardOver = false;
     },
     addToCheckedArticles(article) {
-      if(this.checkedArticles.includes(article)) {
-        let indexOfArticleIncluded = this.checkedArticles.indexOf(article)
-        this.checkedArticles.splice(indexOfArticleIncluded, 1)
-      }
-      else {
-        this.checkedArticles.push(article)
+      if (this.checkedArticles.includes(article)) {
+        let indexOfArticleIncluded = this.checkedArticles.indexOf(article);
+        this.checkedArticles.splice(indexOfArticleIncluded, 1);
+      } else {
+        this.checkedArticles.push(article);
       }
     },
     contentCardClass(article) {
       if (this.checkedArticles.includes(article)) {
-        return "card--content selected"
-      }
-      else {
-        return "card--content"
+        return "card--content selected";
+      } else {
+        return "card--content";
       }
     },
     checkStatusOfArticle(article) {
       if (this.checkedArticles.includes(article)) {
-        return "Unselect"
-      }
-      else {
-        return "Select"
+        return "Unselect";
+      } else {
+        return "Select";
       }
     },
 
     handleRead(item) {
       if (this.sourceSelected === "guardian") {
-        eventBus.$emit('toggle-show-article', item)
-      }
-      else {
-        window.open(item.url)
+        eventBus.$emit("toggle-show-article", item);
+      } else {
+        window.open(item.url);
       }
     }
   }
-}
+};
 </script>
 
 <style lang="css" scoped>
+h1 {
+  color: #b242bc;
+}
+
 h2 {
+  color: #7a99ff;
   text-transform: capitalize;
 }
 
+h3 {
+  font-weight: 100;
+  color: lightgray;
+}
 body {
   width: 100%;
   height: 100%;
@@ -152,13 +157,12 @@ body {
 
 #save_all_items {
   height: 70%;
-
 }
 
-
-
 .card {
-  background-color: #F6C198;
+  /* background-color: #0f1724;
+   */
+  background-color: tr;
   min-width: 100%;
   min-height: 200px;
   overflow-x: auto;
@@ -169,7 +173,7 @@ body {
 .card--content {
   padding: 5px;
   border-radius: 15px;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.1);
   min-width: 200px;
   margin: 10px;
   /* border: 1px solid black; */
@@ -181,7 +185,8 @@ body {
 }
 
 .card--content:hover {
-  background-color: #CDE1F9;
+  color: #052049;
+  background-color: rgba(255, 255, 255, 0.25);
 }
 
 h3 {
@@ -220,7 +225,6 @@ button {
   align-items: center;
   justify-content: center;
   flex-grow: 1;
-
 }
 /* button {
   height: 30%;
@@ -228,13 +232,13 @@ button {
 } */
 
 .hoveredNav > button:hover {
-  background-color: #F6C198;
+  background-color: #b242bc;
   filter: hue-rotate(180);
 }
 
 .selected {
   border: solid #65abff thick;
-  background-color: #CDE1F9;
+  background-color: #cde1f9;
 }
 
 .sections {

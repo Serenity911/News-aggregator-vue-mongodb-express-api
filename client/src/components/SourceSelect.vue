@@ -1,39 +1,41 @@
 <template lang="html">
   <div id="source-select">
     <h1>Select News Source</h1>
-    <br>
+    <br />
     <ul>
       <li v-on:click="handleClick('guardian')">Guardian</li>
       <li v-on:click="handleClick('nyt')">New York Times</li>
     </ul>
   </div>
-
 </template>
 
 <script>
-import {eventBus} from '../main'
+import { eventBus } from "../main";
 export default {
-  name: 'source-select',
+  name: "source-select",
 
   methods: {
     handleClick(source) {
-      eventBus.$emit('toggle-select-article-form', source)
+      eventBus.$emit("toggle-select-article-form", source);
     }
   }
-}
+};
 </script>
 
 <style lang="css" scoped>
-
 h1 {
+  color: #b242bc;
   font-size: 50px;
   text-align: center;
 }
 
 li {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: lightgray;
+
   font-size: 50px;
   text-align: center;
-  font-family: 'IM Fell English', serif;
+  font-family: "IM Fell English", serif;
   list-style: none;
   cursor: pointer;
   border: 8px solid black;
@@ -41,17 +43,15 @@ li {
   width: 40%;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 10px
+  margin-bottom: 10px;
 }
 
 li:hover {
-  background-color: #CDE1F9;
+  background-color: rgba(255, 255, 255, 0.25);
 }
 
 ul {
   margin-left: auto;
   margin-right: auto;
 }
-
-
 </style>

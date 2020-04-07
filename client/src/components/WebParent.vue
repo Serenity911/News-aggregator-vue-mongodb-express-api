@@ -1,30 +1,36 @@
 <template lang="html">
   <div id="web-parent">
     <header>
-      <!-- add an onclick after refactoring the eventBUs -->
-      <!-- <div :class="readingListClass()" v-on:click="toggleReadingList">
-      <p>Reading List</p>
-    </div>
-    <div :class="addArticleClass()" v-on:click="toggleSelectSource">
-    <p>Add Article</p>
-  </div> -->
-</header>
-<!-- <h1>{{ sourceActive }}</h1> -->
-<!-- <pre>{{ JSON.stringify(articles, null, 2) }}</pre> -->
+      <h1>read://it</h1>
+    </header>
+    <main> 
+      <news-nav
+        :articleFormActive="articleFormActive"
+        :readingListActive="readingListActive"
+        :sourceActive="sourceActive"
+        :showArticleActive="showArticleActive"
+      ></news-nav>
 
-<!-- <news-nav :allSections="allSections"></news-nav> -->
-<news-nav :articleFormActive="articleFormActive" :readingListActive="readingListActive" :sourceActive="sourceActive" :showArticleActive="showArticleActive" ></news-nav>
+      <!-- <select-article-form v-if="articleFormActive"  :articles="articles" :sections="sections"/> -->
 
-
-<!-- <select-article-form v-if="articleFormActive"  :articles="articles" :sections="sections"/> -->
-
-<!-- <select-article-form v-if="sections" :articles="articles" :sections="sections" :title='title'/> -->
-<select-article-form v-if="articleFormActive" :sourceSelected="sourceSelected" :articles="articles" :sections="sections" :title='title'/>
-<source-select v-if="sourceActive"/>
-<reading-list v-if="readingListActive" :filteredArticles="filteredArticles" :allSections="allSections" :savedReadingListItems="savedReadingListItems" />
-<show-article v-if="showArticleActive" :articleToShow="articleToShow"/>
-</div>
-
+      <!-- <select-article-form v-if="sections" :articles="articles" :sections="sections" :title='title'/> -->
+      <select-article-form
+        v-if="articleFormActive"
+        :sourceSelected="sourceSelected"
+        :articles="articles"
+        :sections="sections"
+        :title="title"
+      />
+      <source-select v-if="sourceActive" />
+      <reading-list
+        v-if="readingListActive"
+        :filteredArticles="filteredArticles"
+        :allSections="allSections"
+        :savedReadingListItems="savedReadingListItems"
+      />
+      <show-article v-if="showArticleActive" :articleToShow="articleToShow" />
+    </main>
+  </div>
 </template>
 
 <script>
@@ -251,22 +257,20 @@ export default {
 
 <style lang="css" scoped>
 header {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  justify-items: stretch;
-  background-color: darkslategrey;
-  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+h1 {
+  color: #7a99ff;
+  font-size: 3rem;
   text-align: center;
+  padding: 0.5rem;
 }
-.headerActive {
-  background-color: #a4dcc0;
-  color: #2f4f4f;
-  border: #45b097 solid;
-  font-weight: bold;
-}
-.headerInactive:hover {
-  background-color: #68a198;
-  color: #2f4f4f;
-  font-weight: bold;
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
 }
 </style>
