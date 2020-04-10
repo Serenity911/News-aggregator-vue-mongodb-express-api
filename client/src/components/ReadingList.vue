@@ -155,11 +155,12 @@ h1 {
   margin-right: 1em;
 }
 
-/* h2 {
-border: 2px solid black;
+h2 {
+  color: aliceblue;
+/* border: 2px solid black;
 border-radius: 15px;
-padding: 2px 5px 2px 5px;
-} */
+padding: 2px 5px 2px 5px; */
+}
 
 h3 {
   color: lightgray;
