@@ -4,22 +4,26 @@
     <h1 class="heading" v-if="sourceSelected === 'guardian' " >Guardian</h1>
     <h1 class="heading" v-if="sourceSelected === 'nyt' " >New York Times</h1>
     <input type="submit" name="button" value="Save selected Articles" :class="isClickable()" v-on:click="handleSubmit()" ></input>
+   
 
     <div class="sections" v-for="section in localSections" >
       <h2>{{ section }}</h2>
+       <card-component v-if="localArticles" :section="section" :localArticles="localArticles" :sourceSelected="sourceSelected" :localTitle="localTitle"/>
+
       <section class="card"  >
+        
         <!-- <div  :class="contentCardClass(article)" v-for="(article, index) in localArticles[section]" @mouseover.self="cardMouseOver(section + index)" @mouseleave.self="cardMouseLeave"> -->
-        <div  :class="contentCardClass(article)" v-for="(article, index) in localArticles[section]">
-          <h3 >{{ article[`${localTitle}`] }}</h3>
+        <!-- <div  :class="contentCardClass(article)" v-for="(article, index) in localArticles[section]">
+          <h3 >{{ article[`${localTitle}`] }}</h3> -->
           <!-- <div class="hoveredNav" v-if="cardOver === section + index"> -->
-          <div class="hoveredNav">
+          <!-- <div class="hoveredNav">
             <button  :value="article" v-on:click="addToCheckedArticles(article)" type="button" name="select" value="select">{{checkStatusOfArticle(article)}}</button>
 
             <button type="button" name="button" v-on:click="handleShowArticle(article)" :value="article">Read</button>
-          </div>
+          </div> -->
 
 
-        </div>
+        <!-- </div> -->
       </section>
     </div>
   </div>
@@ -28,9 +32,14 @@
 <script>
 import { eventBus } from "../main";
 import NewsService from "../services/NewsService";
+import CardComponent from "./CardComponent.vue"
 
 export default {
   name: "select-article-form",
+
+  components: {
+    "card-component": CardComponent
+  },
   data() {
     return {
       checkedArticles: [],
@@ -73,41 +82,15 @@ export default {
         return "inactive";
       }
     },
-    handleShowArticle(item) {
-      if (this.sourceSelected === "guardian") {
-        eventBus.$emit("toggle-show-article", item);
-      } else {
-        window.open(item.url);
-      }
-    },
+
     cardMouseOver(index) {
       this.cardOver = index;
     },
     cardMouseLeave() {
       this.cardOver = false;
     },
-    addToCheckedArticles(article) {
-      if (this.checkedArticles.includes(article)) {
-        let indexOfArticleIncluded = this.checkedArticles.indexOf(article);
-        this.checkedArticles.splice(indexOfArticleIncluded, 1);
-      } else {
-        this.checkedArticles.push(article);
-      }
-    },
-    contentCardClass(article) {
-      if (this.checkedArticles.includes(article)) {
-        return "card--content selected";
-      } else {
-        return "card--content";
-      }
-    },
-    checkStatusOfArticle(article) {
-      if (this.checkedArticles.includes(article)) {
-        return "Unselect";
-      } else {
-        return "Select";
-      }
-    },
+
+ 
 
     handleRead(item) {
       if (this.sourceSelected === "guardian") {
