@@ -1,11 +1,11 @@
 <template lang="html">
   <div id="card">
               <!-- <div  :class="contentCardClass(article)" v-for="(article, index) in localArticles[section]" @mouseover.self="cardMouseOver(section + index)" @mouseleave.self="cardMouseLeave"> -->
-        <section  :class="contentCardClass(article)" v-for="(article, index) in localArticles[section]" >
-          <main v-on:click="handleSubmit(article)" >{{ article[`${localTitle}`] }}</main>
+        <section  :class="contentCardClass(article)" v-for="(article, index) in articles[section]" >
+          <main >{{ article[`${title}`] }}</main>
           <!-- <div class="hoveredNav" v-if="cardOver === section + index"> -->
           <footer class="hoveredNav">
-            <!-- <button  :value="article" v-on:click="addToCheckedArticles(article)" type="button" name="select" value="select">{{checkStatusOfArticle(article)}}</button> -->
+            <button  :value="article" v-on:click="addToCheckedArticles(article)" type="button" name="select" value="select">{{checkStatusOfArticle(article)}}</button>
 
             <button type="button" name="button" v-on:click="handleShowArticle(article)" :value="article">Read</button>
           </footer>
@@ -17,7 +17,7 @@
 import { eventBus } from "../main";
 export default {
   name: "card-component",
-  props: ["section", "localArticles", "sourceSelected", "checkedArticles","localTitle"],
+  props: ["section", "articles", "sourceSelected", "title"],
   methods: {
     contentCardClass(article) {
     //   if (this.checkedArticles.includes(article)) {
@@ -27,6 +27,8 @@ export default {
     //   }
     },
     addToCheckedArticles(article) {
+      eventBus.$emit("toggle-reading-list", article);
+
     //   if (this.checkedArticles.includes(article)) {
     //     let indexOfArticleIncluded = this.checkedArticles.indexOf(article);
     //     this.checkedArticles.splice(indexOfArticleIncluded, 1);
@@ -42,17 +44,18 @@ export default {
       }
     },
        checkStatusOfArticle(article) {
+        return "Add to list"
     //   if (this.checkedArticles.includes(article)) {
     //     return "Unselect";
     //   } else {
     //     return "Select";
     //   }
     },
-    handleSubmit(article) {
-        console.log(article);
+    // handleSubmit(article) {
+    //     console.log(article);
         
-        eventBus.$emit("toggle-reading-list", article);
-    }
+    //     eventBus.$emit("toggle-reading-list", article);
+    // }
   }
 };
 </script>

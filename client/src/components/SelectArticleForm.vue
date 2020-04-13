@@ -1,17 +1,14 @@
 <template lang="html">
   <div id="select-article-form">
-    <!-- each card is a container for the articles of a section -->
+
     <h1 class="heading" v-if="sourceSelected === 'guardian' " >Guardian</h1>
     <h1 class="heading" v-if="sourceSelected === 'nyt' " >New York Times</h1>
     <input type="submit" name="button" value="Save selected Articles" :class="isClickable()" v-on:click="handleSubmit()" ></input>
    
 
-    <div class="sections" v-for="section in localSections" >
+    <div class="sections" v-for="section in sections" >
       <h2>{{ section }}</h2>
-       <card-component v-if="localArticles" :section="section" :localArticles="localArticles" :sourceSelected="sourceSelected" :localTitle="localTitle"/>
-
-      <!-- <section class="card"  >
-      </section> -->
+       <card-component v-if="articles" :section="section" :articles="articles" :sourceSelected="sourceSelected" :title="title"/>
     </div>
   </div>
 </template>
@@ -30,36 +27,15 @@ export default {
   data() {
     return {
       checkedArticles: [],
-      localArticles: this.articles,
-      localSections: this.sections,
-      localTitle: this.title,
+      // localSections: this.sections,
+      // localTitle: this.title,
       cardOver: false
     };
   },
   props: ["articles", "sections", "title", "sourceSelected"],
 
-  watch: {
-    title: function() {
-      this.localTitle = this.title;
-    },
-    sections: function() {
-      this.localSections = this.sections;
-    }
-  },
   methods: {
-    // handleSubmit() {
-    //   event.preventDefault();
-    //   if (this.checkedArticles.length > 0) {
-    //     if (this.sourceSelected === "nyt") {
-    //       this.checkedArticles.forEach(
-    //         item => (item.section = item.section.toLowerCase())
-    //       );
-    //     }
 
-    //     eventBus.$emit("toggle-reading-list", this.checkedArticles);
-    //     this.checkedArticles = [];
-    //   }
-    // },
     isClickable() {
       if (this.checkedArticles.length > 0) {
         return "clickable";
@@ -73,17 +49,8 @@ export default {
     },
     cardMouseLeave() {
       this.cardOver = false;
-    },
+    }
 
- 
-
-    // handleRead(item) {
-    //   if (this.sourceSelected === "guardian") {
-    //     eventBus.$emit("toggle-show-article", item);
-    //   } else {
-    //     window.open(item.url);
-    //   }
-    // }
   }
 };
 </script>
@@ -97,11 +64,7 @@ h2 {
   color: #7a99ff;
   text-transform: capitalize;
 }
-/* 
-h3 {
-  font-weight: 100;
-  color: lightgray;
-} */
+
 body {
   width: 100%;
   height: 100%;

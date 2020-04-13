@@ -135,12 +135,19 @@ export default {
         // return this.fetchAssistant(source, category.toLowerCase())
         return fetchAssistant
           .getArticleBySection(source, section)
-          .then(articlesToAdd => {
+          .then(fetchedArticles => {
+            let articlesToAdd = []
+            fetchedArticles.forEach(element => {
+              articlesToAdd.push({ ...element, read: this.isArticleInList(element)})
+            });
             this.articles[section] = articlesToAdd;
+          })
+          .then (res => {
+            
           })
           .then(res => {
             this.title = this.selectTitleProperty();
-            console.log("is it logging?", this.title);
+
           })
           .catch(console.error);
       });
@@ -236,6 +243,12 @@ export default {
       } else if (this.sourceSelected === "guardian") {
         return "webTitle";
       }
+    },
+    isArticleInList(article) {
+      const mapOfExistingTitles = this.savedReadingListItems.map(
+        item => item.title
+      );
+      return mapOfExistingTitles.includes(article.title || article.webTitle)
     }
   },
   components: {
