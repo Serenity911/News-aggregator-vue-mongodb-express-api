@@ -10,21 +10,8 @@
       <h2>{{ section }}</h2>
        <card-component v-if="localArticles" :section="section" :localArticles="localArticles" :sourceSelected="sourceSelected" :localTitle="localTitle"/>
 
-      <section class="card"  >
-        
-        <!-- <div  :class="contentCardClass(article)" v-for="(article, index) in localArticles[section]" @mouseover.self="cardMouseOver(section + index)" @mouseleave.self="cardMouseLeave"> -->
-        <!-- <div  :class="contentCardClass(article)" v-for="(article, index) in localArticles[section]">
-          <h3 >{{ article[`${localTitle}`] }}</h3> -->
-          <!-- <div class="hoveredNav" v-if="cardOver === section + index"> -->
-          <!-- <div class="hoveredNav">
-            <button  :value="article" v-on:click="addToCheckedArticles(article)" type="button" name="select" value="select">{{checkStatusOfArticle(article)}}</button>
-
-            <button type="button" name="button" v-on:click="handleShowArticle(article)" :value="article">Read</button>
-          </div> -->
-
-
-        <!-- </div> -->
-      </section>
+      <!-- <section class="card"  >
+      </section> -->
     </div>
   </div>
 </template>
@@ -50,9 +37,7 @@ export default {
     };
   },
   props: ["articles", "sections", "title", "sourceSelected"],
-  // computed: {
-  //
-  // },
+
   watch: {
     title: function() {
       this.localTitle = this.title;
@@ -62,19 +47,19 @@ export default {
     }
   },
   methods: {
-    handleSubmit() {
-      event.preventDefault();
-      if (this.checkedArticles.length > 0) {
-        if (this.sourceSelected === "nyt") {
-          this.checkedArticles.forEach(
-            item => (item.section = item.section.toLowerCase())
-          );
-        }
+    // handleSubmit() {
+    //   event.preventDefault();
+    //   if (this.checkedArticles.length > 0) {
+    //     if (this.sourceSelected === "nyt") {
+    //       this.checkedArticles.forEach(
+    //         item => (item.section = item.section.toLowerCase())
+    //       );
+    //     }
 
-        eventBus.$emit("toggle-reading-list", this.checkedArticles);
-        this.checkedArticles = [];
-      }
-    },
+    //     eventBus.$emit("toggle-reading-list", this.checkedArticles);
+    //     this.checkedArticles = [];
+    //   }
+    // },
     isClickable() {
       if (this.checkedArticles.length > 0) {
         return "clickable";
@@ -92,13 +77,13 @@ export default {
 
  
 
-    handleRead(item) {
-      if (this.sourceSelected === "guardian") {
-        eventBus.$emit("toggle-show-article", item);
-      } else {
-        window.open(item.url);
-      }
-    }
+    // handleRead(item) {
+    //   if (this.sourceSelected === "guardian") {
+    //     eventBus.$emit("toggle-show-article", item);
+    //   } else {
+    //     window.open(item.url);
+    //   }
+    // }
   }
 };
 </script>
@@ -112,11 +97,11 @@ h2 {
   color: #7a99ff;
   text-transform: capitalize;
 }
-
+/* 
 h3 {
   font-weight: 100;
   color: lightgray;
-}
+} */
 body {
   width: 100%;
   height: 100%;
@@ -142,26 +127,21 @@ body {
   height: 70%;
 }
 
-.card {
-  /* background-color: #0f1724;
-   */
-  background-color: tr;
+/* .card {
+   background-color: tr;
   min-width: 100%;
   min-height: 200px;
   overflow-x: auto;
   display: flex;
   border-radius: 15px;
-}
+} */
 
-.card--content {
+/* .card--content {
   padding: 5px;
   border-radius: 15px;
   background-color: rgba(255, 255, 255, 0.1);
   min-width: 200px;
   margin: 10px;
-  /* border: 1px solid black; */
-  /* display: flex; */
-  /* flex-wrap: wrap; */
   align-content: space-between;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -170,13 +150,13 @@ body {
 .card--content:hover {
   color: #052049;
   background-color: rgba(255, 255, 255, 0.25);
-}
-
+} */
+/* 
 h3 {
   padding: 0 5%;
   margin-bottom: 0;
   grid-column: 1/3;
-}
+} */
 
 .clickable {
   display: flex;
@@ -187,7 +167,7 @@ h3 {
   display: none;
 }
 
-.hoveredNav {
+/* .hoveredNav {
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-self: center;
@@ -195,7 +175,7 @@ h3 {
   justify-items: stretch;
   align-items: center;
   align-self: stretch;
-}
+} */
 
 button {
   height: 20px;

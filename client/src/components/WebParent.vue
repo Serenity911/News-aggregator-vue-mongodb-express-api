@@ -183,22 +183,15 @@ export default {
       });
       return foundArticles;
     },
-    addNewArticles(payload) {
-      // const mapOfTitles = payload.map(item => item.title || item.webTitle)
+    addNewArticles(article) {
       const mapOfExistingTitles = this.savedReadingListItems.map(
         item => item.title
       );
-      const newItems = payload.filter(
-        item => !mapOfExistingTitles.includes(item.title || item.webTitle)
-      );
-
-      newItems.forEach(item => {
-        NewsService.postArticles(item).then(article =>
-          this.savedReadingListItems.push(article)
-        );
-      });
-
-      // newItems.forEach(item => this.savedReadingListItems.push(item) )
+  
+      if (!mapOfExistingTitles.includes(article.title || article.webTitle)) {
+        NewsService.postArticles(article)
+        .then(article => this.savedReadingListItems.push(article))
+      }
     },
     readingListClass() {
       return this.selectedHeader === "readingList"

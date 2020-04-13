@@ -1,22 +1,20 @@
 <template lang="html">
-  <div>
+  <div id="card">
               <!-- <div  :class="contentCardClass(article)" v-for="(article, index) in localArticles[section]" @mouseover.self="cardMouseOver(section + index)" @mouseleave.self="cardMouseLeave"> -->
-        <div  :class="contentCardClass(article)" v-for="(article, index) in localArticles[section]">
-          <h3 >{{ article[`${localTitle}`] }}</h3>
+        <section  :class="contentCardClass(article)" v-for="(article, index) in localArticles[section]" >
+          <main v-on:click="handleSubmit(article)" >{{ article[`${localTitle}`] }}</main>
           <!-- <div class="hoveredNav" v-if="cardOver === section + index"> -->
-          <div class="hoveredNav">
-            <button  :value="article" v-on:click="addToCheckedArticles(article)" type="button" name="select" value="select">{{checkStatusOfArticle(article)}}</button>
+          <footer class="hoveredNav">
+            <!-- <button  :value="article" v-on:click="addToCheckedArticles(article)" type="button" name="select" value="select">{{checkStatusOfArticle(article)}}</button> -->
 
             <button type="button" name="button" v-on:click="handleShowArticle(article)" :value="article">Read</button>
-          </div>
-
-
-        </div>
+          </footer>
+        </section>
   </div>
 </template>
 
 <script>
-// import  from "./components/";
+import { eventBus } from "../main";
 export default {
   name: "card-component",
   props: ["section", "localArticles", "sourceSelected", "checkedArticles","localTitle"],
@@ -25,7 +23,7 @@ export default {
     //   if (this.checkedArticles.includes(article)) {
     //     return "card--content selected";
     //   } else {
-    //     return "card--content";
+        return "card--content";
     //   }
     },
     addToCheckedArticles(article) {
@@ -49,6 +47,11 @@ export default {
     //   } else {
     //     return "Select";
     //   }
+    },
+    handleSubmit(article) {
+        console.log(article);
+        
+        eventBus.$emit("toggle-reading-list", article);
     }
   }
 };
@@ -59,8 +62,61 @@ h1 {
     font-size: 10rem;
     color: antiquewhite;
 }
+h3 {
+  font-weight: 100;
+  color: lightgray;
+    padding: 0 5%;
+  margin-bottom: 0;
+  grid-column: 1/3;
+}
 div {
     color: white;
+}
+#card {
+   background-color: tr;
+  min-width: 100%;
+  min-height: 200px;
+  overflow-x: auto;
+  display: flex;
+  border-radius: 15px;
+}
+.card--content {
+  padding: 5px;
+  border-radius: 15px;
+  background-color: rgba(255, 255, 255, 0.1);
+  min-width: 200px;
+  margin: 10px;
+  align-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.card--content:hover {
+  color: #052049;
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.hoveredNav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-self: center;
+  grid-column: 1/3;
+  justify-items: stretch;
+  align-items: center;
+  align-self: stretch;
+}
+
+button {
+  height: 20px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
 }
 </style>
 
