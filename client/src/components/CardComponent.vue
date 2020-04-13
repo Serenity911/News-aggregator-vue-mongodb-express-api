@@ -20,21 +20,21 @@ export default {
   props: ["section", "articles", "sourceSelected", "title"],
   methods: {
     contentCardClass(article) {
-    //   if (this.checkedArticles.includes(article)) {
-    //     return "card--content selected";
-    //   } else {
+      if (article.read) {
+        return "card--content selected";
+      } else {
         return "card--content";
-    //   }
+      }
     },
     addToCheckedArticles(article) {
-      eventBus.$emit("toggle-reading-list", article);
-
-    //   if (this.checkedArticles.includes(article)) {
-    //     let indexOfArticleIncluded = this.checkedArticles.indexOf(article);
-    //     this.checkedArticles.splice(indexOfArticleIncluded, 1);
-    //   } else {
-    //     this.checkedArticles.push(article);
-    //   }
+      if (article.read) {
+        eventBus.$emit("remove-article", article);
+      }
+      else{
+        
+        eventBus.$emit("toggle-reading-list", article);
+      }
+     
     },
     handleShowArticle(item) {
       if (this.sourceSelected === "guardian") {
@@ -43,8 +43,14 @@ export default {
         window.open(item.url);
       }
     },
-       checkStatusOfArticle(article) {
+    checkStatusOfArticle(article) {
+      if (article.read === true) {
+        return "Remove from list"
+      }
+      else {
         return "Add to list"
+      }
+        
     //   if (this.checkedArticles.includes(article)) {
     //     return "Unselect";
     //   } else {
@@ -97,6 +103,13 @@ div {
 .card--content:hover {
   color: #052049;
   background-color: rgba(255, 255, 255, 0.25);
+}
+
+.selected {
+  /* border: solid #65abff thick; */
+  background-color:rgba(255, 255, 255, 0.1);
+  font-style: italic;
+ 
 }
 
 .hoveredNav {

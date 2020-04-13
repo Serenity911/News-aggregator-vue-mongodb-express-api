@@ -85,9 +85,8 @@ export default {
       return this.savedReadingListItems;
     }
   },
-  mounted() {
+   mounted() {
     this.fetchReadingList();
-
     this.readingListClass();
     this.addArticleClass();
 
@@ -111,15 +110,19 @@ export default {
       this.selectedHeader = "addNewArticle";
     });
 
-    eventBus.$on("toggle-reading-list", payload => {
-      this.addNewArticles(payload);
-      this.toggleReadingList();
-      this.selectedHeader = "readingList";
+    eventBus.$on("toggle-reading-list", article => {
+        this.addNewArticles(article);
+        this.toggleReadingList();
+        this.selectedHeader = "readingList";
     });
 
-    eventBus.$on("remove-article", item => {
-      const indexOfDeleted = this.savedReadingListItems.indexOf(item);
-      this.savedReadingListItems.splice(indexOfDeleted, 1);
+    eventBus.$on("remove-article", article => {
+      console.log("1!" , article);   
+      this.removeArticleFromReadingList(article)
+      let savedArticleId = this.findArticleInList(article)._id
+      console.log("3");
+      
+      NewsService.deleteArticle(savedArticleId);
     });
 
     eventBus.$on("toggle-show-article", item => {
@@ -191,14 +194,8 @@ export default {
       return foundArticles;
     },
     addNewArticles(article) {
-      const mapOfExistingTitles = this.savedReadingListItems.map(
-        item => item.title
-      );
-  
-      if (!mapOfExistingTitles.includes(article.title || article.webTitle)) {
-        NewsService.postArticles(article)
-        .then(article => this.savedReadingListItems.push(article))
-      }
+      NewsService.postArticles(article)
+      .then(article => this.savedReadingListItems.push(article))
     },
     readingListClass() {
       return this.selectedHeader === "readingList"
@@ -209,6 +206,11 @@ export default {
       return this.selectedHeader === "addNewArticle"
         ? "headerActive"
         : "headerInactive";
+    },
+    removeArticleFromReadingList(article){
+      const indexOfDeleted = this.savedReadingListItems.indexOf(article);
+      this.savedReadingListItems.splice(indexOfDeleted, 1);
+      
     },
     // getReadingList() {
     //
@@ -249,6 +251,13 @@ export default {
         item => item.title
       );
       return mapOfExistingTitles.includes(article.title || article.webTitle)
+    },
+    findArticleInList(article) {
+      let foundArticle = this.savedReadingListItems.find(({title}) => 
+      title === article.webTitle)
+      console.log("2  ");
+      
+      return foundArticle
     }
   },
   components: {

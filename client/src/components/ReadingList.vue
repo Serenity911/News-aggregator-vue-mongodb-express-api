@@ -88,9 +88,8 @@ export default {
     }
   },
   methods: {
-    handleDelete(item) {
-      NewsService.deleteArticle(item._id);
-      eventBus.$emit("remove-article", item);
+    handleDelete(article) {
+      eventBus.$emit("remove-article", article);
     },
     handleCategorySelection() {
       if (this.selectedSection !== "") {
