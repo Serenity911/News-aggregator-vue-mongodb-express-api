@@ -101,6 +101,7 @@ export default {
     });
 
     eventBus.$on("toggle-select-source", () => {
+      this.articles = {}
       this.toggleSelectSource();
       this.selectedHeader = "addNewArticle";
     });
@@ -113,13 +114,15 @@ export default {
     });
 
     eventBus.$on("toggle-reading-list", payload => {
+      this.articles = {}
       console.log("event bus ", payload)
-        this.addNewArticles(payload);
+      this.addNewArticles(payload);
       this.toggleReadingList();
       this.selectedHeader = "readingList";
     });
 
     eventBus.$on("toggle-nav--reading-list", payload => {
+      this.articles = {}
       console.log("event bus, nav ", payload)
       this.toggleReadingList();
       this.selectedHeader = "readingList";
