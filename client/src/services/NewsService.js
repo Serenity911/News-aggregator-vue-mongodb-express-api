@@ -25,10 +25,12 @@ export default {
     }).then((res) => res.json());
   },
   deleteArticle(id) {
+    console.log("delete call", id);
+    
     return fetch(baseURL + id, {
-      method: "DELETE",
-    });
-  },
+      method: "DELETE"
+    }).then((res) => res.json())
+  }
   // extension? for status read / not-read
   // updateArticle(id, payload) {
   //   return fetch(baseURL + id, {

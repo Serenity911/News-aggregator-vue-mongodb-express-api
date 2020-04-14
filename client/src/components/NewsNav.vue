@@ -46,7 +46,7 @@ export default {
       eventBus.$emit("toggle-select-source");
     },
     handleRead() {
-      eventBus.$emit("toggle-reading-list", []);
+      eventBus.$emit("toggle-nav--reading-list", []);
     }
   }
 };

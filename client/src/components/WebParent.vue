@@ -71,7 +71,8 @@ export default {
   },
   computed: {
     filteredArticles: function() {
-      if (this.searchTerm || this.selectedCategory) {
+      console.log("filter")
+      if (this.searchTerm != "" &&  this.selectedCategory) {
         let filteredArticlesBySearchTerm = this.filterArticlesBySearchTerm(
           this.savedReadingListItems,
           this.searchTerm
@@ -85,8 +86,9 @@ export default {
       return this.savedReadingListItems;
     }
   },
-   mounted() {
+  mounted() {
     this.fetchReadingList();
+
     this.readingListClass();
     this.addArticleClass();
 
@@ -110,19 +112,28 @@ export default {
       this.selectedHeader = "addNewArticle";
     });
 
-    eventBus.$on("toggle-reading-list", article => {
-        this.addNewArticles(article);
-        this.toggleReadingList();
-        this.selectedHeader = "readingList";
+    eventBus.$on("toggle-reading-list", payload => {
+      console.log("event bus ", payload)
+        this.addNewArticles(payload);
+      this.toggleReadingList();
+      this.selectedHeader = "readingList";
     });
 
-    eventBus.$on("remove-article", article => {
-      console.log("1!" , article);   
-      this.removeArticleFromReadingList(article)
-      let savedArticleId = this.findArticleInList(article)._id
-      console.log("3");
+    eventBus.$on("toggle-nav--reading-list", payload => {
+      console.log("event bus, nav ", payload)
+      this.toggleReadingList();
+      this.selectedHeader = "readingList";
+    });
+
+    eventBus.$on("remove-article", item => {
+      let findArticle = this.savedReadingListItems.find(({ id }) => id === item.id)
+      console.log(findArticle);
       
-      NewsService.deleteArticle(savedArticleId);
+      NewsService.deleteArticle(findArticle._id)
+      .then(res => this.savedReadingListItems = res)
+
+      const indexOfDeleted = this.savedReadingListItems.indexOf(item);
+      this.savedReadingListItems.splice(indexOfDeleted, 1);
     });
 
     eventBus.$on("toggle-show-article", item => {
@@ -142,6 +153,7 @@ export default {
             let articlesToAdd = []
             fetchedArticles.forEach(element => {
               articlesToAdd.push({ ...element, read: this.isArticleInList(element)})
+            console.log(articlesToAdd)
             });
             this.articles[section] = articlesToAdd;
           })
@@ -156,11 +168,11 @@ export default {
       });
       Promise.all(promises).then(sections => {
         this.sections = Object.keys(this.articles);
-        console.log("line after section:", this.sections);
       });
     },
-    fetchReadingList() {
-      NewsService.getArticles().then(res => (this.savedReadingListItems = res));
+    fetchReadingList() {      
+      NewsService.getArticles().then(res => 
+        this.savedReadingListItems = res);
     },
     fetchArticleGuardian() {
       const source = "guardian";
@@ -181,21 +193,46 @@ export default {
         return articles;
       } else {
         let filteredArticlesByCategory = articles.filter(article => {
+          console.log("is it in filter by categ", article)
+
           return article.section.toLowerCase() === category;
         });
         return filteredArticlesByCategory;
       }
     },
     filterArticlesBySearchTerm(articles, searchTerm) {
-      const foundArticles = articles.filter(article => {
+      if(articles.length > 0){
+        const foundArticles = articles.filter(article => {
         const title = article.webTitle || article.title;
+        console.log("is it in filter by search term", article)
         return title.toLowerCase().includes(searchTerm);
       });
       return foundArticles;
+      }
     },
     addNewArticles(article) {
-      NewsService.postArticles(article)
-      .then(article => this.savedReadingListItems.push(article))
+      if(this.savedReadingListItems.length > 0) {
+        console.log("add article if")
+
+        const mapOfExistingTitles = this.savedReadingListItems.map(
+          item => item.title
+        );
+
+        if (!mapOfExistingTitles.includes(article.title || article.webTitle)) {
+          NewsService.postArticles(article)
+          .then(article => this.savedReadingListItems.push(article))
+        }
+      }
+      else {
+        console.log("add article else")
+        NewsService.postArticles(article)
+          .then(article => this.savedReadingListItems.push(article))
+      }
+  
+      // if (!mapOfExistingTitles.includes(article.title || article.webTitle)) {
+      //   NewsService.postArticles(article)
+      //   .then(article => this.savedReadingListItems.push(article))
+      // }
     },
     readingListClass() {
       return this.selectedHeader === "readingList"
@@ -206,11 +243,6 @@ export default {
       return this.selectedHeader === "addNewArticle"
         ? "headerActive"
         : "headerInactive";
-    },
-    removeArticleFromReadingList(article){
-      const indexOfDeleted = this.savedReadingListItems.indexOf(article);
-      this.savedReadingListItems.splice(indexOfDeleted, 1);
-      
     },
     // getReadingList() {
     //
@@ -251,13 +283,6 @@ export default {
         item => item.title
       );
       return mapOfExistingTitles.includes(article.title || article.webTitle)
-    },
-    findArticleInList(article) {
-      let foundArticle = this.savedReadingListItems.find(({title}) => 
-      title === article.webTitle)
-      console.log("2  ");
-      
-      return foundArticle
     }
   },
   components: {
