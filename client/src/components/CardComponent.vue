@@ -18,6 +18,12 @@ import { eventBus } from "../main";
 export default {
   name: "card-component",
   props: ["section", "articles", "sourceSelected", "title"],
+  // watch: {
+  //   articles: {
+  //     immediate: true,
+  //   }
+  // },
+
   methods: {
     contentCardClass(article) {
       if (article.read) {

@@ -11,9 +11,6 @@
         :showArticleActive="showArticleActive"
       ></news-nav>
 
-      <!-- <select-article-form v-if="articleFormActive"  :articles="articles" :sections="sections"/> -->
-
-      <!-- <select-article-form v-if="sections" :articles="articles" :sections="sections" :title='title'/> -->
       <select-article-form
         v-if="articleFormActive"
         :sourceSelected="sourceSelected"
@@ -129,14 +126,15 @@ export default {
     });
 
     eventBus.$on("remove-article", item => {
+      console.log(item)
+
+      this.articles[item.section?.toLowerCase() || item.sectionName.toLowerCase()].find((article) => article === item)["read"] = false
+
       let findArticle = this.savedReadingListItems.find(({ id }) => id === item.id)
-      console.log(findArticle);
-      
+
       NewsService.deleteArticle(findArticle._id)
       .then(res => this.savedReadingListItems = res)
 
-      const indexOfDeleted = this.savedReadingListItems.indexOf(item);
-      this.savedReadingListItems.splice(indexOfDeleted, 1);
     });
 
     eventBus.$on("toggle-show-article", item => {
