@@ -1,10 +1,19 @@
 import Vue from 'vue'
-import App from './App.vue'
+// import Vue from 'vue/dist/vue.js';
 
-Vue.config.productionTip = false
+import App from './App.vue'
+import router from 'vue-router'
+
 
 export const eventBus = new Vue();
 
 new Vue({
   render: h => h(App),
+  router: router
 }).$mount('#app')
+// Vue.config.productionTip = false
+
+// new Vue({ render: h => h(App),
+//   VueRouter,
+//   components: { App }
+// }).$mount('#app')

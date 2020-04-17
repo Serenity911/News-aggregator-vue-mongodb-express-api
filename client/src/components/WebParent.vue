@@ -4,13 +4,8 @@
       <h1>read://it</h1>
     </header>
     <main> 
-      <news-nav
-        :articleFormActive="articleFormActive"
-        :readingListActive="readingListActive"
-        :sourceActive="sourceActive"
-        :showArticleActive="showArticleActive"
-      ></news-nav>
 
+    <router-view></router-view>
       <select-article-form
         v-if="articleFormActive"
         :sourceSelected="sourceSelected"
@@ -33,14 +28,13 @@
 <script>
 import { eventBus } from "../main";
 import NewsService from "../services/NewsService.js";
-
 import fetchAssistant from "../services/FetchAssistant.js";
-
 import SelectArticleForm from "./SelectArticleForm.vue";
 import NewsNav from "./NewsNav.vue";
 import SourceSelect from "./SourceSelect.vue";
 import ReadingList from "./ReadingList.vue";
 import ShowArticle from "./ShowArticle.vue";
+
 
 export default {
   name: "web-parent",
@@ -64,7 +58,7 @@ export default {
       sections: null,
       sourceSelected: "guardian",
       title: ""
-    };
+  }
   },
   computed: {
     filteredArticles: function() {
@@ -314,4 +308,6 @@ main {
   align-content: center;
   align-items: center;
 }
+
+
 </style>
