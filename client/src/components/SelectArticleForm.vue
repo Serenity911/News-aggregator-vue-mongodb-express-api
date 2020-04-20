@@ -29,17 +29,7 @@ export default {
       cardOver: false
     };
   },
-  // beforeRouteEnter (to, from, next) {
-  //   getArticles(to.params.id, (err, localArticles) => {
-  //     next(vm => vm.setData(err, localArticles))
-  //   })
-  // },
-  // beforeRouteUpdate (to, from, next) {
-  //   this.localArticles = null
-  //   getArticles(to.params.id, (err, localArticles) => {
-  //     eventBus.$emit("toggle-select-article-form", 'Guardian')
-  //   })
-  // },
+
   props: ["articles", "sections", "title"],
   created() {
     sections: {
@@ -48,38 +38,25 @@ export default {
     title: {
       return this.title;
     }
-    // articles: {
-    //   eventBus.$emit("toggle-select-article-form", "Guardian");
-    // }
+  },
+  mounted() {
+    console.log("called the mounted!")
+    eventBus.$emit("toggle-select-article-form", this.$route.params.source);
+    console.log("after the mounted..")
   },
   computed: {
     sourceSelected() {
       return this.$route.params.source;
     },
-    // localArticles() {
-    //   if (this.$route.params.source) {
-    //     console.log("is it in the computed?");
-    //     eventBus.$emit("toggle-select-article-form", this.$route.params.source);
-    //     return this.articles;
-    //   }
-    // },
+    localArticles() {
+        console.log("is it in the computed?");
+        eventBus.$emit("toggle-select-article-form", this.$route.params.source);
+        return this.articles;
+    },
     getTitle() {
       return this.title;
     }
   },
-
-  mounted() {
-    localArticles: {
-      eventBus.$emit("toggle-select-article-form", this.$route.params.source);
-    }
-
-  },
-  
-  // $route(to, from) {
-  //   console.log("is it loggin under watch in select article form");
-  //   eventBus.$on("leave-article-form", e);
-  // }
-  // },
   methods: { 
     isClickable() {
       if (this.checkedArticles.length > 0) {
@@ -88,7 +65,6 @@ export default {
         return "inactive";
       }
     },
-
     cardMouseOver(index) {
       this.cardOver = index;
     },
@@ -134,37 +110,6 @@ body {
   height: 70%;
 }
 
-/* .card {
-   background-color: tr;
-  min-width: 100%;
-  min-height: 200px;
-  overflow-x: auto;
-  display: flex;
-  border-radius: 15px;
-} */
-
-/* .card--content {
-  padding: 5px;
-  border-radius: 15px;
-  background-color: rgba(255, 255, 255, 0.1);
-  min-width: 200px;
-  margin: 10px;
-  align-content: space-between;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-
-.card--content:hover {
-  color: #052049;
-  background-color: rgba(255, 255, 255, 0.25);
-} */
-/* 
-h3 {
-  padding: 0 5%;
-  margin-bottom: 0;
-  grid-column: 1/3;
-} */
-
 .clickable {
   display: flex;
   font-size: 1.5em;
@@ -173,16 +118,6 @@ h3 {
 .inactive {
   display: none;
 }
-
-/* .hoveredNav {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-self: center;
-  grid-column: 1/3;
-  justify-items: stretch;
-  align-items: center;
-  align-self: stretch;
-} */
 
 button {
   height: 20px;
@@ -196,10 +131,7 @@ button {
   justify-content: center;
   flex-grow: 1;
 }
-/* button {
-  height: 30%;
 
-} */
 
 .hoveredNav > button:hover {
   background-color: #b242bc;

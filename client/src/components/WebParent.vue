@@ -10,21 +10,7 @@
         <router-link to="/read-article"> Read Article </router-link>
     </p>
     <router-view :sections='sections' :title='title' :articles='articles'></router-view>
-    <!-- v-if="articleFormActive" -->
-      <!-- <select-article-form
-        :sourceSelected="sourceSelected"
-        :articles="articles"
-        :sections="sections"
-        :title="title"
-      />
-      <source-select v-if="sourceActive" />
-      <reading-list
-        v-if="readingListActive"
-        :filteredArticles="filteredArticles"
-        :allSections="allSections"
-        :savedReadingListItems="savedReadingListItems"
-      />
-      <show-article v-if="showArticleActive" :articleToShow="articleToShow" /> -->
+
     </main>
   </div>
 </template>
@@ -95,15 +81,12 @@ export default {
 
     eventBus.$on("toggle-select-source", () => {
       this.articles = {};
-      // this.toggleSelectSource();
       this.selectedHeader = "addNewArticle";
     });
 
     eventBus.$on("toggle-select-article-form", source => {
       this.sourceSelected = source;
-      //removed the fetch right now
       this.fetchAllArticles(this.allSections, source);
-      // this.toggleSelectArticleForm();
       this.selectedHeader = "addNewArticle";
     });
 
@@ -111,14 +94,11 @@ export default {
       this.articles = {};
       console.log("event bus ", payload);
       this.addNewArticles(payload);
-      // this.toggleReadingList();
       this.selectedHeader = "readingList";
     });
 
     eventBus.$on("toggle-nav--reading-list", payload => {
       this.articles = {};
-      console.log("event bus, nav ", payload);
-      // this.toggleReadingList();
       this.selectedHeader = "readingList";
     });
 
@@ -141,7 +121,6 @@ export default {
     eventBus.$on("toggle-show-article", item => {
       this.selectedArticle = item;
       this.fetchArticleGuardian();
-      // this.toggleShowArticle();
       this.selectedHeader = "readingList";
     });
   },
@@ -149,7 +128,6 @@ export default {
     fetchAllArticles(arrayOfCategories, source) {
       this.articles = {};
       const promises = arrayOfCategories.map(section => {
-        // return this.fetchAssistant(source, category.toLowerCase())
         return fetchAssistant
           .getArticleBySection(source, section)
           .then(fetchedArticles => {
@@ -231,10 +209,6 @@ export default {
         );
       }
 
-      // if (!mapOfExistingTitles.includes(article.title || article.webTitle)) {
-      //   NewsService.postArticles(article)
-      //   .then(article => this.savedReadingListItems.push(article))
-      // }
     },
     readingListClass() {
       return this.selectedHeader === "readingList"
@@ -246,33 +220,6 @@ export default {
         ? "headerActive"
         : "headerInactive";
     },
-    // getReadingList() {
-    //
-    // // },
-    // toggleSelectSource() {
-    //   this.sourceActive = true;
-    //   this.readingListActive = false;
-    //   this.articleFormActive = false;
-    //   this.showArticleActive = false;
-    // },
-    // toggleSelectArticleForm() {
-    //   this.articleFormActive = true;
-    //   this.sourceActive = false;
-    //   this.readingListActive = false;
-    //   this.showArticleActive = false;
-    // },
-    // toggleReadingList() {
-    //   this.articleFormActive = false;
-    //   this.sourceActive = false;
-    //   this.readingListActive = true;
-    //   this.showArticleActive = false;
-    // },
-    // toggleShowArticle() {
-    //   this.articleFormActive = false;
-    //   this.sourceActive = false;
-    //   this.readingListActive = false;
-    //   this.showArticleActive = true;
-    // },
     selectTitleProperty() {
       if (this.sourceSelected === "nyt") {
         return "title";
