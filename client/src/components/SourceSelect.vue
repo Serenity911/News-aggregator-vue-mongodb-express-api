@@ -3,8 +3,9 @@
     <h1>Select News Source</h1>
     <br />
     <ul>
-      <li v-on:click="handleClick('guardian')">Guardian</li>
-      <li v-on:click="handleClick('nyt')">New York Times</li>
+      <li><router-link to="/add-article/guardian">Guardian</router-link></li>
+      <li><router-link to="/add-article/nyt">New York Times</router-link></li>
+    <router-view ></router-view>
     </ul>
   </div>
 </template>
@@ -12,13 +13,7 @@
 <script>
 import { eventBus } from "../main";
 export default {
-  name: "source-select",
-
-  methods: {
-    handleClick(source) {
-      eventBus.$emit("toggle-select-article-form", source);
-    }
-  }
+  name: "source-select"
 };
 </script>
 

@@ -2,7 +2,7 @@ import Vue from 'vue'
 // import Vue from 'vue/dist/vue.js';
 
 import App from './App.vue'
-import router from 'vue-router'
+import router from '../routes.js'
 
 
 export const eventBus = new Vue();
@@ -17,3 +17,4 @@ new Vue({
 //   VueRouter,
 //   components: { App }
 // }).$mount('#app')
+

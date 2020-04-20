@@ -3,6 +3,7 @@
               <!-- <div  :class="contentCardClass(article)" v-for="(article, index) in localArticles[section]" @mouseover.self="cardMouseOver(section + index)" @mouseleave.self="cardMouseLeave"> -->
         <section  :class="contentCardClass(article)" v-for="(article, index) in articles[section]" >
           <main >{{ article[`${title}`] }}</main>
+          <h2>{{ article.webUrl || article.url}}  </h2>
           <!-- <div class="hoveredNav" v-if="cardOver === section + index"> -->
           <footer class="hoveredNav">
             <button  :value="article" v-on:click="addToCheckedArticles(article)" type="button" name="select" value="select">{{checkStatusOfArticle(article)}}</button>
@@ -35,12 +36,9 @@ export default {
     addToCheckedArticles(article) {
       if (article.read) {
         eventBus.$emit("remove-article", article);
-      }
-      else{
-        
+      } else {
         eventBus.$emit("toggle-reading-list", article);
       }
-     
     },
     handleShowArticle(item) {
       if (this.sourceSelected === "guardian") {
@@ -51,21 +49,20 @@ export default {
     },
     checkStatusOfArticle(article) {
       if (article.read === true) {
-        return "Remove from list"
+        return "Remove from list";
+      } else {
+        return "Add to list";
       }
-      else {
-        return "Add to list"
-      }
-        
-    //   if (this.checkedArticles.includes(article)) {
-    //     return "Unselect";
-    //   } else {
-    //     return "Select";
-    //   }
-    },
+
+      //   if (this.checkedArticles.includes(article)) {
+      //     return "Unselect";
+      //   } else {
+      //     return "Select";
+      //   }
+    }
     // handleSubmit(article) {
     //     console.log(article);
-        
+
     //     eventBus.$emit("toggle-reading-list", article);
     // }
   }
@@ -74,21 +71,21 @@ export default {
 
 <style lang="css" scoped>
 h1 {
-    font-size: 10rem;
-    color: antiquewhite;
+  font-size: 10rem;
+  color: antiquewhite;
 }
 h3 {
   font-weight: 100;
   color: lightgray;
-    padding: 0 5%;
+  padding: 0 5%;
   margin-bottom: 0;
   grid-column: 1/3;
 }
 div {
-    color: white;
+  color: white;
 }
 #card {
-   background-color: tr;
+  background-color: tr;
   min-width: 100%;
   min-height: 200px;
   overflow-x: auto;
@@ -113,9 +110,8 @@ div {
 
 .selected {
   /* border: solid #65abff thick; */
-  background-color:rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.1);
   font-style: italic;
- 
 }
 
 .hoveredNav {

@@ -1,12 +1,11 @@
 <template lang="html">
   <div id="select-article-form">
-
     <h1 class="heading" v-if="sourceSelected === 'guardian' " >Guardian</h1>
     <h1 class="heading" v-if="sourceSelected === 'nyt' " >New York Times</h1>
     <input type="submit" name="button" value="Save selected Articles" :class="isClickable()" v-on:click="handleSubmit()" ></input>
    
 
-    <div class="sections" v-for="section in sections" >
+    <div class="sections" v-for="section in allSections" >
       <h2>{{ section }}</h2>
        <card-component v-if="articles" :section="section" :articles="articles" :sourceSelected="sourceSelected" :title="title"/>
     </div>
@@ -16,7 +15,8 @@
 <script>
 import { eventBus } from "../main";
 import NewsService from "../services/NewsService";
-import CardComponent from "./CardComponent.vue"
+import CardComponent from "./CardComponent.vue";
+import fetchAssistant from "../services/FetchAssistant.js";
 
 export default {
   name: "select-article-form",
@@ -27,15 +27,69 @@ export default {
   data() {
     return {
       checkedArticles: [],
-      // localSections: this.sections,
-      // localTitle: this.title,
-      cardOver: false
+      cardOver: false,
+      articles: null,
+      allSections: ["business", "technology", "food", "world", "travel"],
+      title: ""
+
     };
   },
-  props: ["articles", "sections", "title", "sourceSelected"],
+  // beforeRouteEnter (to, from, next) {
+  //   getArticles(to.params.id, (err, localArticles) => {
+  //     next(vm => vm.setData(err, localArticles))
+  //   })
+  // },
+  // beforeRouteUpdate (to, from, next) {
+  //   this.localArticles = null
+  //   getArticles(to.params.id, (err, localArticles) => {
+  //     eventBus.$emit("toggle-select-article-form", 'Guardian')
+  //   })
+  // },
+  props: ["isArticleInList", "selectTitleProperty"],
 
-  methods: {
+  computed: {
+    sourceSelected() {
+      return this.$route.params.source;
+    }
+  },
 
+  mounted() {
+    this.fetchAllArticles(this.allSections, this.$route.params.source)
+  },
+  
+  // $route(to, from) {
+  //   console.log("is it loggin under watch in select article form");
+  //   eventBus.$on("leave-article-form", e);
+  // }
+  // },
+  methods: { 
+    fetchAllArticles(arrayOfCategories, source) {
+      this.articles = {};
+      const promises = arrayOfCategories.map(section => {
+        // return this.fetchAssistant(source, category.toLowerCase())
+        return fetchAssistant
+          .getArticleBySection(source, section)
+          .then(fetchedArticles => {
+            let articlesToAdd = [];
+            fetchedArticles.forEach(element => {
+              articlesToAdd.push({
+                ...element,
+                read: this.isArticleInList(element)
+              });
+              console.log(articlesToAdd);
+            });
+            this.articles[section] = articlesToAdd;
+          })
+          .then(res => {
+            this.title = this.selectTitleProperty();
+          })
+          .catch(console.error);
+      });
+      Promise.all(promises)
+      // .then(sections => {
+      //   this.sections = Object.keys(this.articles);
+      // });
+    },
     isClickable() {
       if (this.checkedArticles.length > 0) {
         return "clickable";
@@ -50,7 +104,6 @@ export default {
     cardMouseLeave() {
       this.cardOver = false;
     }
-
   }
 };
 </script>

@@ -4,23 +4,13 @@
       <h1>read://it</h1>
     </header>
     <main> 
+    <p id=nav>
+        <router-link :to="{name: 'add-article', params: {sourceSelected: 'sourceSelected', articles: 'articles', sections: 'sections', title: 'title', isArticleInList: 'isArticleInList'}}" > Add Article </router-link>
+        <router-link to="/reading-list"> Reading List </router-link>        
+        <router-link to="/read-article"> Read Article </router-link>
+    </p>
+    <router-view :sections='sections' :title='title' :articles='articles' :isArticleInList='isArticleInList' :selectTitleProperty='selectTitleProperty'></router-view>
 
-    <router-view></router-view>
-      <select-article-form
-        v-if="articleFormActive"
-        :sourceSelected="sourceSelected"
-        :articles="articles"
-        :sections="sections"
-        :title="title"
-      />
-      <source-select v-if="sourceActive" />
-      <reading-list
-        v-if="readingListActive"
-        :filteredArticles="filteredArticles"
-        :allSections="allSections"
-        :savedReadingListItems="savedReadingListItems"
-      />
-      <show-article v-if="showArticleActive" :articleToShow="articleToShow" />
     </main>
   </div>
 </template>
@@ -35,12 +25,11 @@ import SourceSelect from "./SourceSelect.vue";
 import ReadingList from "./ReadingList.vue";
 import ShowArticle from "./ShowArticle.vue";
 
-
 export default {
   name: "web-parent",
   data() {
     return {
-      articles: {},
+      articles: null,
       savedReadingListItems: [],
 
       selectedArticle: null,
@@ -50,7 +39,7 @@ export default {
       selectedCategory: "allSections",
 
       sourceActive: false,
-      articleFormActive: false,
+      articleFormActive: true,
       readingListActive: true,
       showArticleActive: false,
       allSections: ["business", "technology", "food", "world", "travel"],
@@ -58,12 +47,11 @@ export default {
       sections: null,
       sourceSelected: "guardian",
       title: ""
-  }
+    };
   },
   computed: {
     filteredArticles: function() {
-      console.log("filter")
-      if (this.searchTerm != "" &&  this.selectedCategory) {
+      if (this.searchTerm != "" && this.selectedCategory) {
         let filteredArticlesBySearchTerm = this.filterArticlesBySearchTerm(
           this.savedReadingListItems,
           this.searchTerm
@@ -91,83 +79,65 @@ export default {
       this.selectedCategory = category;
     });
 
+    // TODO to refactor - vue router
     eventBus.$on("toggle-select-source", () => {
-      this.articles = {}
-      this.toggleSelectSource();
+      this.articles = {};
+      // this.toggleSelectSource();
       this.selectedHeader = "addNewArticle";
     });
 
+    // TODO to refactor - vue router
+
     eventBus.$on("toggle-select-article-form", source => {
       this.sourceSelected = source;
-      this.fetchAllArticles(this.allSections, source);
-      this.toggleSelectArticleForm();
+      //removed the fetch right now
+      // this.fetchAllArticles(this.allSections, source);
+      // this.toggleSelectArticleForm();
       this.selectedHeader = "addNewArticle";
     });
 
     eventBus.$on("toggle-reading-list", payload => {
-      this.articles = {}
-      console.log("event bus ", payload)
+      this.articles = {};
+      console.log("event bus ", payload);
       this.addNewArticles(payload);
-      this.toggleReadingList();
+      // this.toggleReadingList();
       this.selectedHeader = "readingList";
     });
 
     eventBus.$on("toggle-nav--reading-list", payload => {
-      this.articles = {}
-      console.log("event bus, nav ", payload)
-      this.toggleReadingList();
+      this.articles = {};
+      console.log("event bus, nav ", payload);
+      // this.toggleReadingList();
       this.selectedHeader = "readingList";
     });
 
     eventBus.$on("remove-article", item => {
-      console.log(item)
+      console.log(item);
 
-      this.articles[item.section?.toLowerCase() || item.sectionName.toLowerCase()].find((article) => article === item)["read"] = false
+      this.articles[
+        item.section?.toLowerCase() || item.sectionName.toLowerCase()
+      ].find(article => article === item)["read"] = false;
 
-      let findArticle = this.savedReadingListItems.find(({ id }) => id === item.id)
+      let findArticle = this.savedReadingListItems.find(
+        ({ id }) => id === item.id
+      );
 
-      NewsService.deleteArticle(findArticle._id)
-      .then(res => this.savedReadingListItems = res)
-
+      NewsService.deleteArticle(findArticle._id).then(
+        res => (this.savedReadingListItems = res)
+      );
     });
 
     eventBus.$on("toggle-show-article", item => {
       this.selectedArticle = item;
       this.fetchArticleGuardian();
-      this.toggleShowArticle();
+      // this.toggleShowArticle();
       this.selectedHeader = "readingList";
     });
   },
   methods: {
-    fetchAllArticles(arrayOfCategories, source) {
-      const promises = arrayOfCategories.map(section => {
-        // return this.fetchAssistant(source, category.toLowerCase())
-        return fetchAssistant
-          .getArticleBySection(source, section)
-          .then(fetchedArticles => {
-            let articlesToAdd = []
-            fetchedArticles.forEach(element => {
-              articlesToAdd.push({ ...element, read: this.isArticleInList(element)})
-            console.log(articlesToAdd)
-            });
-            this.articles[section] = articlesToAdd;
-          })
-          .then (res => {
-            
-          })
-          .then(res => {
-            this.title = this.selectTitleProperty();
-
-          })
-          .catch(console.error);
-      });
-      Promise.all(promises).then(sections => {
-        this.sections = Object.keys(this.articles);
-      });
-    },
-    fetchReadingList() {      
-      NewsService.getArticles().then(res => 
-        this.savedReadingListItems = res);
+    
+    fetchReadingList() {
+      NewsService.getArticles().then(res => (this.savedReadingListItems = res));
     },
     fetchArticleGuardian() {
       const source = "guardian";
@@ -188,7 +158,7 @@ export default {
         return articles;
       } else {
         let filteredArticlesByCategory = articles.filter(article => {
-          console.log("is it in filter by categ", article)
+          console.log("is it in filter by categ", article);
 
           return article.section.toLowerCase() === category;
         });
@@ -196,34 +166,35 @@ export default {
       }
     },
     filterArticlesBySearchTerm(articles, searchTerm) {
-      if(articles.length > 0){
+      if (articles.length > 0) {
         const foundArticles = articles.filter(article => {
-        const title = article.webTitle || article.title;
-        console.log("is it in filter by search term", article)
-        return title.toLowerCase().includes(searchTerm);
-      });
-      return foundArticles;
+          const title = article.webTitle || article.title;
+          console.log("is it in filter by search term", article);
+          return title.toLowerCase().includes(searchTerm);
+        });
+        return foundArticles;
       }
     },
     addNewArticles(article) {
-      if(this.savedReadingListItems.length > 0) {
-        console.log("add article if")
+      if (this.savedReadingListItems.length > 0) {
+        console.log("add article if");
 
         const mapOfExistingTitles = this.savedReadingListItems.map(
           item => item.title
         );
 
         if (!mapOfExistingTitles.includes(article.title || article.webTitle)) {
-          NewsService.postArticles(article)
-          .then(article => this.savedReadingListItems.push(article))
+          NewsService.postArticles(article).then(article =>
+            this.savedReadingListItems.push(article)
+          );
         }
+      } else {
+        console.log("add article else");
+        NewsService.postArticles(article).then(article =>
+          this.savedReadingListItems.push(article)
+        );
       }
-      else {
-        console.log("add article else")
-        NewsService.postArticles(article)
-          .then(article => this.savedReadingListItems.push(article))
-      }
-  
+
       // if (!mapOfExistingTitles.includes(article.title || article.webTitle)) {
       //   NewsService.postArticles(article)
       //   .then(article => this.savedReadingListItems.push(article))
@@ -241,31 +212,31 @@ export default {
     },
     // getReadingList() {
     //
+    // // },
+    // toggleSelectSource() {
+    //   this.sourceActive = true;
+    //   this.readingListActive = false;
+    //   this.articleFormActive = false;
+    //   this.showArticleActive = false;
     // },
-    toggleSelectSource() {
-      this.sourceActive = true;
-      this.readingListActive = false;
-      this.articleFormActive = false;
-      this.showArticleActive = false;
-    },
-    toggleSelectArticleForm() {
-      this.articleFormActive = true;
-      this.sourceActive = false;
-      this.readingListActive = false;
-      this.showArticleActive = false;
-    },
-    toggleReadingList() {
-      this.articleFormActive = false;
-      this.sourceActive = false;
-      this.readingListActive = true;
-      this.showArticleActive = false;
-    },
-    toggleShowArticle() {
-      this.articleFormActive = false;
-      this.sourceActive = false;
-      this.readingListActive = false;
-      this.showArticleActive = true;
-    },
+    // toggleSelectArticleForm() {
+    //   this.articleFormActive = true;
+    //   this.sourceActive = false;
+    //   this.readingListActive = false;
+    //   this.showArticleActive = false;
+    // },
+    // toggleReadingList() {
+    //   this.articleFormActive = false;
+    //   this.sourceActive = false;
+    //   this.readingListActive = true;
+    //   this.showArticleActive = false;
+    // },
+    // toggleShowArticle() {
+    //   this.articleFormActive = false;
+    //   this.sourceActive = false;
+    //   this.readingListActive = false;
+    //   this.showArticleActive = true;
+    // },
     selectTitleProperty() {
       if (this.sourceSelected === "nyt") {
         return "title";
@@ -277,7 +248,7 @@ export default {
       const mapOfExistingTitles = this.savedReadingListItems.map(
         item => item.title
       );
-      return mapOfExistingTitles.includes(article.title || article.webTitle)
+      return mapOfExistingTitles.includes(article.title || article.webTitle);
     }
   },
   components: {
@@ -308,6 +279,4 @@ main {
   align-content: center;
   align-items: center;
 }
-
-
 </style>
