@@ -3,7 +3,6 @@
               <!-- <div  :class="contentCardClass(article)" v-for="(article, index) in localArticles[section]" @mouseover.self="cardMouseOver(section + index)" @mouseleave.self="cardMouseLeave"> -->
         <section  :class="contentCardClass(article)" v-for="(article, index) in articles[section]" >
           <main >{{ article[`${title}`] }}</main>
-          <h2>{{ article.webUrl || article.url}}  </h2>
           <!-- <div class="hoveredNav" v-if="cardOver === section + index"> -->
           <footer class="hoveredNav">
             <button  :value="article" v-on:click="addToCheckedArticles(article)" type="button" name="select" value="select">{{checkStatusOfArticle(article)}}</button>

@@ -40,16 +40,13 @@ export default {
     }
   },
   mounted() {
-    console.log("called the mounted!")
     eventBus.$emit("toggle-select-article-form", this.$route.params.source);
-    console.log("after the mounted..")
   },
   computed: {
     sourceSelected() {
       return this.$route.params.source;
     },
     localArticles() {
-        console.log("is it in the computed?");
         eventBus.$emit("toggle-select-article-form", this.$route.params.source);
         return this.articles;
     },
