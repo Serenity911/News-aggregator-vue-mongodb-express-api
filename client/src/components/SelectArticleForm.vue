@@ -5,7 +5,7 @@
     <input type="submit" name="button" value="Save selected Articles" :class="isClickable()" v-on:click="handleSubmit()" ></input>
    
 
-    <div class="sections" v-for="section in allSections" >
+    <div class="sections" v-for="section in sections" >
       <h2>{{ section }}</h2>
        <card-component v-if="articles" :section="section" :articles="articles" :sourceSelected="sourceSelected" :title="title"/>
     </div>
@@ -16,7 +16,6 @@
 import { eventBus } from "../main";
 import NewsService from "../services/NewsService";
 import CardComponent from "./CardComponent.vue";
-import fetchAssistant from "../services/FetchAssistant.js";
 
 export default {
   name: "select-article-form",
@@ -27,11 +26,7 @@ export default {
   data() {
     return {
       checkedArticles: [],
-      cardOver: false,
-      articles: null,
-      allSections: ["business", "technology", "food", "world", "travel"],
-      title: ""
-
+      cardOver: false
     };
   },
   // beforeRouteEnter (to, from, next) {
@@ -45,16 +40,39 @@ export default {
   //     eventBus.$emit("toggle-select-article-form", 'Guardian')
   //   })
   // },
-  props: ["isArticleInList", "selectTitleProperty"],
-
+  props: ["articles", "sections", "title"],
+  created() {
+    sections: {
+      return this.sections;
+    }
+    title: {
+      return this.title;
+    }
+    // articles: {
+    //   eventBus.$emit("toggle-select-article-form", "Guardian");
+    // }
+  },
   computed: {
     sourceSelected() {
       return this.$route.params.source;
+    },
+    // localArticles() {
+    //   if (this.$route.params.source) {
+    //     console.log("is it in the computed?");
+    //     eventBus.$emit("toggle-select-article-form", this.$route.params.source);
+    //     return this.articles;
+    //   }
+    // },
+    getTitle() {
+      return this.title;
     }
   },
 
   mounted() {
-    this.fetchAllArticles(this.allSections, this.$route.params.source)
+    localArticles: {
+      eventBus.$emit("toggle-select-article-form", this.$route.params.source);
+    }
+
   },
   
   // $route(to, from) {
@@ -63,33 +81,6 @@ export default {
   // }
   // },
   methods: { 
-    fetchAllArticles(arrayOfCategories, source) {
-      this.articles = {};
-      const promises = arrayOfCategories.map(section => {
-        // return this.fetchAssistant(source, category.toLowerCase())
-        return fetchAssistant
-          .getArticleBySection(source, section)
-          .then(fetchedArticles => {
-            let articlesToAdd = [];
-            fetchedArticles.forEach(element => {
-              articlesToAdd.push({
-                ...element,
-                read: this.isArticleInList(element)
-              });
-              console.log(articlesToAdd);
-            });
-            this.articles[section] = articlesToAdd;
-          })
-          .then(res => {
-            this.title = this.selectTitleProperty();
-          })
-          .catch(console.error);
-      });
-      Promise.all(promises)
-      // .then(sections => {
-      //   this.sections = Object.keys(this.articles);
-      // });
-    },
     isClickable() {
       if (this.checkedArticles.length > 0) {
         return "clickable";

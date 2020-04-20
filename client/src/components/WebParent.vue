@@ -5,12 +5,26 @@
     </header>
     <main> 
     <p id=nav>
-        <router-link :to="{name: 'add-article', params: {sourceSelected: 'sourceSelected', articles: 'articles', sections: 'sections', title: 'title', isArticleInList: 'isArticleInList'}}" > Add Article </router-link>
+        <router-link :to="{name: 'add-article', params: {sourceSelected: 'sourceSelected', articles: 'articles', sections: 'sections', title: 'title'}}" > Add Article </router-link>
         <router-link to="/reading-list"> Reading List </router-link>        
         <router-link to="/read-article"> Read Article </router-link>
     </p>
-    <router-view :sections='sections' :title='title' :articles='articles' :isArticleInList='isArticleInList' :selectTitleProperty='selectTitleProperty'></router-view>
-
+    <router-view :sections='sections' :title='title' :articles='articles'></router-view>
+    <!-- v-if="articleFormActive" -->
+      <!-- <select-article-form
+        :sourceSelected="sourceSelected"
+        :articles="articles"
+        :sections="sections"
+        :title="title"
+      />
+      <source-select v-if="sourceActive" />
+      <reading-list
+        v-if="readingListActive"
+        :filteredArticles="filteredArticles"
+        :allSections="allSections"
+        :savedReadingListItems="savedReadingListItems"
+      />
+      <show-article v-if="showArticleActive" :articleToShow="articleToShow" /> -->
     </main>
   </div>
 </template>
@@ -29,7 +43,7 @@ export default {
   name: "web-parent",
   data() {
     return {
-      articles: null,
+      articles: {},
       savedReadingListItems: [],
 
       selectedArticle: null,
@@ -79,19 +93,16 @@ export default {
       this.selectedCategory = category;
     });
 
-    // TODO to refactor - vue router
     eventBus.$on("toggle-select-source", () => {
       this.articles = {};
       // this.toggleSelectSource();
       this.selectedHeader = "addNewArticle";
     });
 
-    // TODO to refactor - vue router
-
     eventBus.$on("toggle-select-article-form", source => {
       this.sourceSelected = source;
       //removed the fetch right now
-      // this.fetchAllArticles(this.allSections, source);
+      this.fetchAllArticles(this.allSections, source);
       // this.toggleSelectArticleForm();
       this.selectedHeader = "addNewArticle";
     });
@@ -135,7 +146,32 @@ export default {
     });
   },
   methods: {
-    
+    fetchAllArticles(arrayOfCategories, source) {
+      this.articles = {};
+      const promises = arrayOfCategories.map(section => {
+        // return this.fetchAssistant(source, category.toLowerCase())
+        return fetchAssistant
+          .getArticleBySection(source, section)
+          .then(fetchedArticles => {
+            let articlesToAdd = [];
+            fetchedArticles.forEach(element => {
+              articlesToAdd.push({
+                ...element,
+                read: this.isArticleInList(element)
+              });
+              console.log(articlesToAdd);
+            });
+            this.articles[section] = articlesToAdd;
+          })
+          .then(res => {
+            this.title = this.selectTitleProperty();
+          })
+          .catch(console.error);
+      });
+      Promise.all(promises).then(sections => {
+        this.sections = Object.keys(this.articles);
+      });
+    },
     fetchReadingList() {
       NewsService.getArticles().then(res => (this.savedReadingListItems = res));
     },
