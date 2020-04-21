@@ -25,8 +25,8 @@
         favourite articles.
       </h2>
 
-      <section >
-       <section-component v-for="article in filteredArticles" v-if="filteredArticles" :article="article" :section="section" :articles="filteredArticles" :getSource="getSource" :articleToShow='articleToShow' :getTitle='getTitle'/>
+      <section  :class="contentCardClass(article)" v-if="filteredArticles"  v-for="article in filteredArticles">
+       <card-component :article="article" :articleToShow='articleToShow' :getTitle="getTitle"/>
 
 
       </section>
@@ -66,14 +66,14 @@
 <script>
 import NewsService from "../services/NewsService.js";
 import { eventBus } from "../main";
-import SectionComponent from "./SectionComponent.vue";
+import CardComponent from "./CardComponent.vue";
 
 
 export default {
   name: "reading-list",
   props: ["filteredArticles", "allSections", "savedReadingListItems", "getSource", "articleToShow", "getTitle"],
   components: {
-    "section-component": SectionComponent
+    "card-component": CardComponent
   },
   data() {
     return {

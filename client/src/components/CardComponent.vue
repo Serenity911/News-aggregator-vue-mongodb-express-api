@@ -1,41 +1,25 @@
 <template lang="html">
-  <div id="section">
-              <!-- <div  :class="contentCardClass(article)" v-for="(article, index) in localArticles[section]" @mouseover.self="cardMouseOver(section + index)" @mouseleave.self="cardMouseLeave"> -->
-        <section  :class="contentCardClass(article)" v-for="(article, index) in articles[section]" >
-          <card-component :article="article" :getTitle="getTitle"></card-component>
-          
-          <!-- <main >{{ article[`${getTitle(article)}`] }}</main> -->
-          <!-- <div class="hoveredNav" v-if="cardOver === section + index"> -->
-          <!-- <footer class="hoveredNav"> -->
-            <!-- <button  :value="article" v-on:click="addToReadingList(article)" type="button" name="select" value="select">{{checkStatusOfArticle(article)}}</button> -->
+  <div id="card" class="card--content">
+    <main>{{ getTitle(article)}}</main>
+    <!-- <div class="hoveredNav" v-if="cardOver === section + index"> -->
+    <footer class="hoveredNav">
+    <button  :value="article" v-on:click="addToReadingList(article)" type="button" name="select" value="select">{{checkStatusOfArticle(article)}}</button>
 
-            <!-- <button type="button" name="button" v-on:click="handleShowArticle(article)" :value="article"> -->
-            <!-- <li><router-link to="/read-article/">Read</router-link></li> -->
-              <!-- </button> -->
-            <!-- <router-view :articleToShow='articleToShow'></router-view> -->
+    <!-- <button type="button" name="button" v-on:click="handleShowArticle(article)" :value="article"> -->
+    <li><router-link to="/read-article/">Read</router-link></li>
+        <!-- </button> -->
+    <router-view :articleToShow='articleToShow'></router-view>
 
-          </footer>
-        </section>
+    </footer>
   </div>
 </template>
 
 <script>
 import { eventBus } from "../main";
-import CardComponent from "./CardComponent.vue";
-
 export default {
-  name: "section-component",
-  props: ["section", "articles", "sourceSelected", "articleToShow", "getTitle"],
-  components: {
-    "card-component": CardComponent
-  },
-  // watch: {
-  //   articles: {
-  //     immediate: true,
-  //     deep: true
-  //   }
-  // },
-
+  name: "card-component",
+  props: ["article", "articleToShow", "getTitle"],
+ 
   methods: {
     contentCardClass(article) {
       if (article.read) {
@@ -51,13 +35,13 @@ export default {
         eventBus.$emit("toggle-reading-list", article);
       }
     },
-    handleShowArticle(item) {
-      if (getSource(item) === "guardian") {
-        eventBus.$emit("toggle-show-article", item);
-      } else {
-        window.open(item.url);
-      }
-    },
+//     handleShowArticle(item) {
+//       if (getSource(item) === "guardian") {
+//         eventBus.$emit("toggle-show-article", item);
+//       } else {
+//         window.open(item.url);
+//       }
+//     },
     checkStatusOfArticle(article) {
       if (article.read === true) {
         return "Remove from list";
@@ -96,7 +80,7 @@ h3 {
 div {
   color: white;
 }
-#section {
+#card {
   background-color: tr;
   min-width: 100%;
   min-height: 200px;

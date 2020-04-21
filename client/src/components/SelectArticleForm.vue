@@ -7,7 +7,7 @@
 
     <div class="sections" v-for="section in sections" >
       <h2>{{ section }}</h2>
-       <section-component v-if="articles" :section="section" :articles="articles" :sourceSelected="sourceSelected" :title="title" :articleToShow='articleToShow'/>
+       <section-component v-if="articles" :section="section" :articles="articles" :sourceSelected="sourceSelected" :getTitle="getTitle" :articleToShow='articleToShow'/>
     </div>
   </div>
 </template>
@@ -30,7 +30,7 @@ export default {
     };
   },
 
-  props: ["articles", "sections", "title", "articleToShow"],
+  props: ["articles", "sections", "title", "articleToShow", "getTitle"],
   created() {
     sections: {
       return this.sections;
@@ -49,9 +49,6 @@ export default {
     localArticles() {
         eventBus.$emit("toggle-select-article-form", this.$route.params.source);
         return this.articles;
-    },
-    getTitle() {
-      return this.title;
     }
   },
   methods: { 
