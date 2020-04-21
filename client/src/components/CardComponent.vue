@@ -1,5 +1,5 @@
 <template lang="html">
-  <div id="card" class="card--content">
+  <div id="card" class="card1--content">
     <main>{{ getTitle(article)}}</main>
     <!-- <div class="hoveredNav" v-if="cardOver === section + index"> -->
     <footer class="hoveredNav">
@@ -82,26 +82,40 @@ div {
 }
 #card {
   background-color: tr;
-  min-width: 100%;
-  min-height: 200px;
+  min-width: 10rem;
+  min-height: 11rem;
   overflow-x: auto;
-  display: flex;
+  display: grid;
+  grid-template-areas: "main"
+                        "footer";
   border-radius: 15px;
 }
-.card--content {
-  padding: 5px;
+
+main {
+    margin: 1rem 1rem 0 1rem;
+}
+
+.card1--content {
+    margin: 0.5rem;
+    padding: 5px;
+  border-radius: 15px;
+  background-color: rgba(255, 255, 255, 0.1);
+  min-width: 200px; 
+  /* margin: 10px; */
+  /* padding: 5px;
   border-radius: 15px;
   background-color: rgba(255, 255, 255, 0.1);
   min-width: 200px;
   margin: 10px;
   align-content: space-between;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr; */
 }
 
-.card--content:hover {
+.card1--content:hover {
   color: #052049;
   background-color: rgba(255, 255, 255, 0.25);
+  
 }
 
 .selected {
@@ -113,11 +127,11 @@ div {
 .hoveredNav {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  align-self: center;
-  grid-column: 1/3;
+  /* align-self: center; */
+  /* grid-column: 1/3; */
   justify-items: stretch;
   align-items: center;
-  align-self: stretch;
+  /* align-self: stretch; */
 }
 
 button {
@@ -131,6 +145,13 @@ button {
   align-items: center;
   justify-content: center;
   flex-grow: 1;
+  align-self: self-end;
+  margin-bottom: 1rem;    
+}
+
+li {
+    align-self: flex-end;
+    margin-bottom: 1rem;    
 }
 </style>
 

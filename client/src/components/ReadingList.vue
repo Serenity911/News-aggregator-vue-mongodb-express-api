@@ -1,5 +1,5 @@
 <template lang="">
-  <div id="reading-list">
+  <div id="reading-list" >
     <div class="reading-list">
       <div class="heading">
         <div class="category-search" v-if="areThereArticles">
@@ -25,8 +25,8 @@
         favourite articles.
       </h2>
 
-      <section  :class="contentCardClass(article)" v-if="filteredArticles"  v-for="article in filteredArticles">
-       <card-component :article="article" :articleToShow='articleToShow' :getTitle="getTitle"/>
+      <section class="card-wrapper" v-if="filteredArticles"  v-for="article in filteredArticles">
+        <card-component :article="article" :articleToShow='articleToShow' :getTitle="getTitle"/>
 
 
       </section>
@@ -205,40 +205,16 @@ p {
   flex-direction: column;
 }
 
-.card {
-  background-color: trasparent;
-  /* border: 3px solid black; */
+.card-wrapper {
+  padding: 5px;
   border-radius: 15px;
-  padding: 10px 2px 10px 2px;
-  /* this seems to cause an issue. Commented out and delete when sure */
-  /* min-height: 500px; */
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  width: 940px;
-}
-
-.card--content {
-  border-radius: 25px;
-  /* background-color: #0f1724; */
   background-color: rgba(255, 255, 255, 0.1);
-
-  border: 1px solid black;
-  min-width: 200px;
-  max-width: 200px;
-  margin: 5px;
-  padding: 10px;
-  min-height: 215px;
-  max-height: 215px;
+  min-width: 13rem;
+  max-width: 15rem; 
+  margin: 10px;
+  /* align-content: space-between;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 20% 50% 30%;
-  grid-row-gap: 5%;
-  justify-items: center;
-}
-
-.card--content:hover {
-  background-color: rgba(255, 255, 255, 0.25);
+  grid-template-columns: 1fr 1fr; */
 }
 
 .category-search {
