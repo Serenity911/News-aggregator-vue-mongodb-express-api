@@ -3,18 +3,6 @@
               <!-- <div  :class="contentCardClass(article)" v-for="(article, index) in localArticles[section]" @mouseover.self="cardMouseOver(section + index)" @mouseleave.self="cardMouseLeave"> -->
         <section  class="section--content" v-for="(article, index) in articles[section]" >
           <card-component :article="article" :getTitle="getTitle"></card-component>
-          
-          <!-- <main >{{ article[`${getTitle(article)}`] }}</main> -->
-          <!-- <div class="hoveredNav" v-if="cardOver === section + index"> -->
-          <!-- <footer class="hoveredNav"> -->
-            <!-- <button  :value="article" v-on:click="addToReadingList(article)" type="button" name="select" value="select">{{checkStatusOfArticle(article)}}</button> -->
-
-            <!-- <button type="button" name="button" v-on:click="handleShowArticle(article)" :value="article"> -->
-            <!-- <li><router-link to="/read-article/">Read</router-link></li> -->
-              <!-- </button> -->
-            <!-- <router-view :articleToShow='articleToShow'></router-view> -->
-
-          </footer>
         </section>
   </div>
 </template>
@@ -29,13 +17,6 @@ export default {
   components: {
     "card-component": CardComponent
   },
-  // watch: {
-  //   articles: {
-  //     immediate: true,
-  //     deep: true
-  //   }
-  // },
-
   methods: {
     contentCardClass(article) {
       if (article.read) {
@@ -82,38 +63,23 @@ export default {
 </script>
 
 <style lang="css" scoped>
-h1 {
-  font-size: 10rem;
-  color: antiquewhite;
-}
-h3 {
-  font-weight: 100;
-  color: lightgray;
-  padding: 0 5%;
-  margin-bottom: 0;
-  grid-column: 1/3;
-}
-div {
-  color: white;
-}
+
 #section {
-  background-color: tr;
+  color: white;
   min-width: 100%;
-  min-height: 200px;
+  min-height: 14rem;
   overflow-x: auto;
   display: flex;
   border-radius: 15px;
 }
+
 .section--content {
   padding: 5px;
   border-radius: 15px;
   background-color: rgba(255, 255, 255, 0.1);
   min-width: 13rem;
   max-width: 15rem; 
-  margin: 10px;
-  /* align-content: space-between;
-  display: grid;
-  grid-template-columns: 1fr 1fr; */
+  margin: 10px; 
 }
 
 .section--content:hover {
@@ -122,33 +88,10 @@ div {
 }
 
 .selected {
-  /* border: solid #65abff thick; */
   background-color: rgba(255, 255, 255, 0.1);
   font-style: italic;
 }
 
-.hoveredNav {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-self: center;
-  grid-column: 1/3;
-  justify-items: stretch;
-  align-items: center;
-  align-self: stretch;
-}
-
-button {
-  height: 20px;
-  background-color: transparent;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex-grow: 1;
-}
 </style>
 
 

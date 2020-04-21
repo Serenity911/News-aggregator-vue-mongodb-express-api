@@ -1,6 +1,6 @@
 <template lang="">
   <div id="reading-list" >
-    <div class="reading-list">
+    <div class="reading-list-wrapper">
       <div class="heading">
         <div class="category-search" v-if="areThereArticles">
           <label for="">Category</label>
@@ -29,36 +29,7 @@
         <card-component :article="article" :articleToShow='articleToShow' :getTitle="getTitle"/>
 
 
-      </section>
-
-<!-- 
-      <section class="card" v-if="areThereArticles">
-        <div
-          @mouseover.self="cardMouseOver(index, item)"
-          @mouseleave.self="cardMouseLeave()"
-          :class="contentCardClass()"
-          v-for="(item, index) in filteredArticles"
-        >
-        
-          <header>
-            <h5>{{ itemSource(item) }}</h5>
-            <h4 :class="item.section">{{ item.section }}</h4>
-          </header>
-          <h3>{{ item.title }}</h3> -->
-          <!-- <div class="hoveredNav" v-if="cardOverIndex === index"> -->
-
-          <!-- <div class="hoveredNav" > -->
-            <!-- <a v-on:click="handleDelete(item)"
-              ><img class="cross" src="../assets/cross.png" />Remove</a
-            >
-            <a v-on:click="handleRead(item)"
-              ><img class="cross" src="../assets/view.png" />
-              Read</a
-            >
-          </div>
-
-        </div>
-      </section> -->
+      </section>     
     </div>
   </div>
 </template>
@@ -149,14 +120,9 @@ body {
   height: 100%;
 }
 
-/* body {
-  background-color: #0a1018;
-} */
-
 h1 {
   color: #b242bc;
   text-align: center;
-  /* border: 2px solid black; */
   border-radius: 15px;
   padding: 2px 5px 2px 5px;
   align-self: center;
@@ -166,12 +132,9 @@ h1 {
 
 h2 {
   color: aliceblue;
-/* border: 2px solid black;
-border-radius: 15px;
-padding: 2px 5px 2px 5px; */
 }
 
-h3 {
+/* h3 {
   color: lightgray;
   font-weight: 100;
   font-size: 1.1rem;
@@ -179,27 +142,26 @@ h3 {
   margin-bottom: 0;
   margin-top: 0;
   grid-column: 1/3;
-}
+} */
 
-h4 {
+/* h4 {
   justify-self: self-start;
   font-size: 1.1em;
-}
+} */
 
-h5 {
+/* h5 {
   color: aliceblue;
   justify-self: self-end;
-}
+} */
 
-p {
+/* p {
   max-height: 90px;
   overflow: hidden;
   text-overflow: ellipsis;
-}
+} */
 
-.reading-list {
+.reading-list-wrapper {
   border: 5px 5px 5px 5px solid black;
-  /* size: 100%; */
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -212,9 +174,7 @@ p {
   min-width: 13rem;
   max-width: 15rem; 
   margin: 10px;
-  /* align-content: space-between;
-  display: grid;
-  grid-template-columns: 1fr 1fr; */
+
 }
 
 .category-search {
@@ -224,35 +184,6 @@ p {
   align-items: center;
 }
 
-a {
-  background-color: transparent;
-  color: #b242bc;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  min-width: 4rem;
-  justify-items: center;
-}
-
-a:hover {
-  background-color: #b242bca9;
-  color: #052049;
-}
-
-.cross {
-  box-sizing: border-box;
-  min-height: 25px;
-  max-height: 27px;
-  opacity: 0.4;
-  margin: 10%;
-  color: aliceblue;
-}
 
 .heading {
   display: flex;
@@ -266,24 +197,6 @@ form {
 
 select {
   height: 3em;
-}
-
-.hoveredNav {
-  /* background-color: #b242bc; */
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-column: 1/3;
-  align-self: end;
-  margin-bottom: 8%;
-  grid-column-gap: 1rem;
-}
-
-header {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  justify-items: center;
-  grid-column: 1/3;
-  grid-row: 1;
 }
 
 .technology {

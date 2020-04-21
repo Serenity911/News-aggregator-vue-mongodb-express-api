@@ -1,13 +1,9 @@
 <template lang="html">
   <div id="card" class="card1--content">
     <main>{{ getTitle(article)}}</main>
-    <!-- <div class="hoveredNav" v-if="cardOver === section + index"> -->
     <footer class="hoveredNav">
     <button  :value="article" v-on:click="addToReadingList(article)" type="button" name="select" value="select">{{checkStatusOfArticle(article)}}</button>
-
-    <!-- <button type="button" name="button" v-on:click="handleShowArticle(article)" :value="article"> -->
     <li><router-link to="/read-article/">Read</router-link></li>
-        <!-- </button> -->
     <router-view :articleToShow='articleToShow'></router-view>
 
     </footer>
@@ -35,13 +31,6 @@ export default {
         eventBus.$emit("toggle-reading-list", article);
       }
     },
-//     handleShowArticle(item) {
-//       if (getSource(item) === "guardian") {
-//         eventBus.$emit("toggle-show-article", item);
-//       } else {
-//         window.open(item.url);
-//       }
-//     },
     checkStatusOfArticle(article) {
       if (article.read === true) {
         return "Remove from list";
@@ -66,21 +55,9 @@ export default {
 </script>
 
 <style lang="css" scoped>
-h1 {
-  font-size: 10rem;
-  color: antiquewhite;
-}
-h3 {
-  font-weight: 100;
-  color: lightgray;
-  padding: 0 5%;
-  margin-bottom: 0;
-  grid-column: 1/3;
-}
-div {
-  color: white;
-}
+
 #card {
+  color: white;
   background-color: tr;
   min-width: 10rem;
   min-height: 11rem;
@@ -101,15 +78,6 @@ main {
   border-radius: 15px;
   background-color: rgba(255, 255, 255, 0.1);
   min-width: 200px; 
-  /* margin: 10px; */
-  /* padding: 5px;
-  border-radius: 15px;
-  background-color: rgba(255, 255, 255, 0.1);
-  min-width: 200px;
-  margin: 10px;
-  align-content: space-between;
-  display: grid;
-  grid-template-columns: 1fr 1fr; */
 }
 
 .card1--content:hover {
