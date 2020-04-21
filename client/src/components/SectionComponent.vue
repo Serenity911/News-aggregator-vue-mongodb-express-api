@@ -5,9 +5,13 @@
           <main >{{ article[`${title}`] }}</main>
           <!-- <div class="hoveredNav" v-if="cardOver === section + index"> -->
           <footer class="hoveredNav">
-            <button  :value="article" v-on:click="addToCheckedArticles(article)" type="button" name="select" value="select">{{checkStatusOfArticle(article)}}</button>
+            <button  :value="article" v-on:click="addToReadingList(article)" type="button" name="select" value="select">{{checkStatusOfArticle(article)}}</button>
 
-            <button type="button" name="button" v-on:click="handleShowArticle(article)" :value="article">Read</button>
+            <!-- <button type="button" name="button" v-on:click="handleShowArticle(article)" :value="article"> -->
+            <li><router-link to="/read-article/">Read</router-link></li>
+              <!-- </button> -->
+            <router-view :articleToShow='articleToShow'></router-view>
+
           </footer>
         </section>
   </div>
@@ -16,11 +20,13 @@
 <script>
 import { eventBus } from "../main";
 export default {
-  name: "card-component",
-  props: ["section", "articles", "sourceSelected", "title"],
+  name: "section-component",
+  props: ["section", "articles", "sourceSelected", "title", "articleToShow"],
+  
   // watch: {
   //   articles: {
   //     immediate: true,
+  //     deep: true
   //   }
   // },
 
@@ -32,7 +38,7 @@ export default {
         return "card--content";
       }
     },
-    addToCheckedArticles(article) {
+    addToReadingList(article) {
       if (article.read) {
         eventBus.$emit("remove-article", article);
       } else {
@@ -40,7 +46,7 @@ export default {
       }
     },
     handleShowArticle(item) {
-      if (this.sourceSelected === "guardian") {
+      if (getSource(item) === "guardian") {
         eventBus.$emit("toggle-show-article", item);
       } else {
         window.open(item.url);
@@ -52,19 +58,20 @@ export default {
       } else {
         return "Add to list";
       }
-
+    }
+}
       //   if (this.checkedArticles.includes(article)) {
       //     return "Unselect";
       //   } else {
       //     return "Select";
       //   }
-    }
+    // }
     // handleSubmit(article) {
     //     console.log(article);
 
     //     eventBus.$emit("toggle-reading-list", article);
     // }
-  }
+  // }
 };
 </script>
 

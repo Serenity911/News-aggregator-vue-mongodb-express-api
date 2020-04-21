@@ -1,5 +1,5 @@
 <template lang="html">
-  <div v-if="articleToShow" class="">
+  <div id="show-article">
     <article>
       <header>
       <h2>

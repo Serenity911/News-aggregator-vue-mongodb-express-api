@@ -5,11 +5,12 @@
     </header>
     <main> 
     <p id=nav>
-        <router-link :to="{name: 'add-article', params: {sourceSelected: 'sourceSelected', articles: 'articles', sections: 'sections', title: 'title'}}" > Add Article </router-link>
-        <router-link to="/reading-list"> Reading List </router-link>        
-        <router-link to="/read-article"> Read Article </router-link>
+        <router-link :to="{name: 'select-source'}" > Add Article </router-link>
+        <router-link :to="{name: 'reading-list'}"> Reading List </router-link>        
+        <!-- <router-link :to="{name: 'read-article', params: {articleToShow: 'articleToShow'}}"> Read Article </router-link> -->
     </p>
-    <router-view :sections='sections' :title='title' :articles='articles'></router-view>
+    <!-- <router-view></router-view> -->
+    <router-view :sections='sections' :title='title' :articles='articles' :filteredArticles='filteredArticles' :allSections='allSections' :savedReadingListItems='savedReadingListItems' :articleToShow='articleToShow' :getSource='getSource' :getTitle='getTitle'></router-view>
 
     </main>
   </div>
@@ -29,7 +30,7 @@ export default {
   name: "web-parent",
   data() {
     return {
-      articles: {},
+      articles: null,
       savedReadingListItems: [],
 
       selectedArticle: null,
@@ -38,10 +39,10 @@ export default {
       searchTerm: "",
       selectedCategory: "allSections",
 
-      sourceActive: false,
-      articleFormActive: true,
-      readingListActive: true,
-      showArticleActive: false,
+      // sourceActive: false,
+      // articleFormActive: true,
+      // readingListActive: true,
+      // showArticleActive: false,
       allSections: ["business", "technology", "food", "world", "travel"],
       selectedHeader: "readingList",
       sections: null,
@@ -97,30 +98,22 @@ export default {
       this.selectedHeader = "readingList";
     });
 
-    eventBus.$on("toggle-nav--reading-list", payload => {
-      this.articles = {};
-      this.selectedHeader = "readingList";
-    });
+
 
     eventBus.$on("remove-article", item => {
       console.log(item);
-
-      this.articles[
-        item.section?.toLowerCase() || item.sectionName.toLowerCase()
-      ].find(article => article === item)["read"] = false;
-
+ 
       let findArticle = this.savedReadingListItems.find(
         ({ id }) => id === item.id
       );
-
       NewsService.deleteArticle(findArticle._id).then(
         res => (this.savedReadingListItems = res)
       );
     });
 
     eventBus.$on("toggle-show-article", item => {
-      this.selectedArticle = item;
-      this.fetchArticleGuardian();
+      // this.selectedArticle = item;
+      this.fetchArticleGuardian(item);
       this.selectedHeader = "readingList";
     });
   },
@@ -153,15 +146,25 @@ export default {
     fetchReadingList() {
       NewsService.getArticles().then(res => (this.savedReadingListItems = res));
     },
-    fetchArticleGuardian() {
-      const source = "guardian";
-      console.log(this.selectedArticle);
-      if (this.selectedArticle) {
+    fetchArticleGuardian(item) {
+      const title = getTitle(item)
+      const source = getSource(item)
+      // source = "guardian";
+      console.log(title);
+      console.log(source)
+      if (source==='guardian') {
         fetchAssistant
-          .getArticle(source, this.selectedArticle.apiUrl)
+          .getArticle(source, item.apiUrl)
           // fetch_assistant_guardian.getArticle(this.selectedArticle.apiUrl)
-          .then(res => (this.articleToShow = res));
+          .then(res => (this.articleToShow = res))
+
       }
+    },
+    getSource(item){
+      return item.title ? 'guardian' : 'nyt'
+    },
+    getTitle(item){
+      return item.title || item.webTitle
     },
     // fetchSections() {
     //   fetch_assistant_guardian.getAllSections()
@@ -191,7 +194,7 @@ export default {
     },
     addNewArticles(article) {
       if (this.savedReadingListItems.length > 0) {
-        console.log("add article if");
+        console.log("add article but check existing articles removing duplicates");
 
         const mapOfExistingTitles = this.savedReadingListItems.map(
           item => item.title
@@ -203,7 +206,7 @@ export default {
           );
         }
       } else {
-        console.log("add article else");
+        console.log("add article - reading list is empty so just add it");
         NewsService.postArticles(article).then(article =>
           this.savedReadingListItems.push(article)
         );

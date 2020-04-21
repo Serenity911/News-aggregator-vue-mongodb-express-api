@@ -7,7 +7,7 @@
 
     <div class="sections" v-for="section in sections" >
       <h2>{{ section }}</h2>
-       <card-component v-if="articles" :section="section" :articles="articles" :sourceSelected="sourceSelected" :title="title"/>
+       <section-component v-if="articles" :section="section" :articles="articles" :sourceSelected="sourceSelected" :title="title" :articleToShow='articleToShow'/>
     </div>
   </div>
 </template>
@@ -15,13 +15,13 @@
 <script>
 import { eventBus } from "../main";
 import NewsService from "../services/NewsService";
-import CardComponent from "./CardComponent.vue";
+import SectionComponent from "./SectionComponent.vue";
 
 export default {
   name: "select-article-form",
 
   components: {
-    "card-component": CardComponent
+    "section-component": SectionComponent
   },
   data() {
     return {
@@ -30,7 +30,7 @@ export default {
     };
   },
 
-  props: ["articles", "sections", "title"],
+  props: ["articles", "sections", "title", "articleToShow"],
   created() {
     sections: {
       return this.sections;

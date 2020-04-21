@@ -25,6 +25,13 @@
         favourite articles.
       </h2>
 
+      <section >
+       <section-component v-for="article in filteredArticles" v-if="filteredArticles" :article="article" :section="section" :articles="filteredArticles" :getSource="getSource" :articleToShow='articleToShow' :getTitle='getTitle'/>
+
+
+      </section>
+
+<!-- 
       <section class="card" v-if="areThereArticles">
         <div
           @mouseover.self="cardMouseOver(index, item)"
@@ -37,12 +44,11 @@
             <h5>{{ itemSource(item) }}</h5>
             <h4 :class="item.section">{{ item.section }}</h4>
           </header>
-          <h3>{{ item.title }}</h3>
+          <h3>{{ item.title }}</h3> -->
           <!-- <div class="hoveredNav" v-if="cardOverIndex === index"> -->
 
-          <div class="hoveredNav" >
-            <!-- <div class="hoveredNav" > -->
-            <a v-on:click="handleDelete(item)"
+          <!-- <div class="hoveredNav" > -->
+            <!-- <a v-on:click="handleDelete(item)"
               ><img class="cross" src="../assets/cross.png" />Remove</a
             >
             <a v-on:click="handleRead(item)"
@@ -51,10 +57,8 @@
             >
           </div>
 
-          <!-- <a :href="fetchArticleAPI"></a> -->
-          <!-- <p>news and possibly an image. There will almost certainly be a headline here but mayebe not an image. A plus button will most likely be present and that will be just awesome. cqcn eqfqfv vdwfv fqsfcsq feqfq fqfqfwq fwqdfwqf fwqfwq fwqfqw fqwfq</p> -->
         </div>
-      </section>
+      </section> -->
     </div>
   </div>
 </template>
@@ -62,10 +66,15 @@
 <script>
 import NewsService from "../services/NewsService.js";
 import { eventBus } from "../main";
+import SectionComponent from "./SectionComponent.vue";
+
 
 export default {
   name: "reading-list",
-  props: ["filteredArticles", "allSections", "savedReadingListItems"],
+  props: ["filteredArticles", "allSections", "savedReadingListItems", "getSource", "articleToShow", "getTitle"],
+  components: {
+    "section-component": SectionComponent
+  },
   data() {
     return {
       search: "",
