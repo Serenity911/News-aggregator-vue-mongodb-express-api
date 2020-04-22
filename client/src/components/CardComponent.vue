@@ -3,7 +3,7 @@
     <main>{{ getTitle(article)}}</main>
     <footer class="hoveredNav">
     <button  :value="article" v-on:click="addToReadingList(article)" type="button" name="select" value="select">{{checkStatusOfArticle(article)}}</button>
-    <li><router-link to="/read-article/">Read</router-link></li>
+    <button><router-link to="/read-article/" class="link">Read</router-link></button>
     <router-view :articleToShow='articleToShow'></router-view>
 
     </footer>
@@ -56,8 +56,11 @@ export default {
 
 <style lang="css" scoped>
 
+
+
+
 #card {
-  color: white;
+  color: lightgray;
   background-color: tr;
   min-width: 10rem;
   min-height: 11rem;
@@ -66,6 +69,7 @@ export default {
   grid-template-areas: "main"
                         "footer";
   border-radius: 15px;
+  font-size: 2.7vw;
 }
 
 main {
@@ -86,6 +90,11 @@ main {
   
 }
 
+.link {
+    color: lightgray;
+    text-decoration: none;
+
+}
 .selected {
   /* border: solid #65abff thick; */
   background-color: rgba(255, 255, 255, 0.1);
@@ -95,16 +104,12 @@ main {
 .hoveredNav {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  /* align-self: center; */
-  /* grid-column: 1/3; */
-  justify-items: stretch;
+  justify-items: center;
   align-items: center;
-  /* align-self: stretch; */
 }
 
 button {
   height: 20px;
-  background-color: transparent;
   border: none;
   outline: none;
   cursor: pointer;
@@ -114,7 +119,18 @@ button {
   justify-content: center;
   flex-grow: 1;
   align-self: self-end;
-  margin-bottom: 1rem;    
+  margin-bottom: 1rem;
+  border-radius: 15px; 
+  padding: 1rem; 
+  background-color:  rgb(50, 50, 50);
+  color: lightgray;
+  font-size: 1.8vw;
+
+}
+
+button:first-of-type {
+  background-color:  #b242bc;
+  color: lightgray;
 }
 
 li {

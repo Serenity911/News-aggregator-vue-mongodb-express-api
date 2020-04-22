@@ -113,19 +113,6 @@ body {
   display: none;
 }
 
-button {
-  height: 20px;
-  background-color: transparent;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex-grow: 1;
-}
-
 
 .hoveredNav > button:hover {
   background-color: #b242bc;
