@@ -1,8 +1,10 @@
 <template lang="html">
   <div id="card" class="card1--content">
-    <!-- <main> -->
-      <p>{{ getTitle(article)}}</p>
-    <!-- </main> -->
+    <header v-if="this.$route.params.source === 'nyt'" > 
+      <h3>{{article.source}}</h3>
+      <h4 :class="article.section">{{ article.section }}</h4>
+    </header>
+    <p>{{ getTitle(article)}}</p>
     <footer class="hoveredNav">
       <button  :value="article" v-on:click="addToReadingList(article)" type="button" name="select" value="select"><router-link to="/reading-list/" class="link"> {{checkStatusOfArticle(article)}}</router-link></button>
       <button><router-link to="/read-article/" class="link">Read</router-link></button>
@@ -16,7 +18,9 @@ import { eventBus } from "../main";
 export default {
   name: "card-component",
   props: ["article", "articleToShow", "getTitle"],
-
+  mounted() {
+    console.log(this.$route.params);
+  },
   methods: {
     contentCardClass(article) {
       if (article.read) {
@@ -59,6 +63,20 @@ export default {
 <style lang="css" scoped>
 main {
   margin: 1rem 1rem 0 1rem;
+}
+
+#card > header {
+  display: flex;
+  align-items: center;
+}
+
+#card > header > h4 {
+  justify-self: self-end;
+}
+
+#card > header > h3 {
+  justify-self: self-start;
+  font-size: 1.1em;
 }
 
 .card1--content {
@@ -125,6 +143,26 @@ p {
   font-size: 2.6vh;
   height: 10rem;
   overflow: hidden;
+}
+
+.technology {
+  color: rgb(23, 148, 28);
+}
+
+.business {
+  color: rgb(26, 22, 208);
+}
+
+.food {
+  color: rgb(238, 29, 29);
+}
+
+.travel {
+  color: rgb(172, 158, 34);
+}
+
+.world {
+  color: rgb(237, 129, 17);
 }
 </style>
 

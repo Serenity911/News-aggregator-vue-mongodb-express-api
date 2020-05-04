@@ -26,7 +26,7 @@ export default {
   },
   deleteArticle(id) {
     console.log("delete call", id);
-    
+
     return fetch(baseURL + id, {
       method: "DELETE"
     }).then((res) => res.json())

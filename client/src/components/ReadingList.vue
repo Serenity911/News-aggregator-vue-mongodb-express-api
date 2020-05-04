@@ -176,25 +176,7 @@ select {
   height: 3em;
 }
 
-.technology {
-  color: rgb(23, 148, 28);
-}
 
-.business {
-  color: rgb(26, 22, 208);
-}
-
-.food {
-  color: rgb(238, 29, 29);
-}
-
-.travel {
-  color: rgb(172, 158, 34);
-}
-
-.world {
-  color: rgb(237, 129, 17);
-}
 
 #reading-list {
   background-color: rgba(255, 255, 255, 0.04);
