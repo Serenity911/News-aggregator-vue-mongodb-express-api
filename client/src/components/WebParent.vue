@@ -93,7 +93,6 @@ export default {
 
     eventBus.$on("toggle-reading-list", payload => {
       this.articles = {};
-      console.log("event bus ", payload);
       this.addNewArticles(payload);
       this.selectedHeader = "readingList";
     });

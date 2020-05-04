@@ -4,7 +4,7 @@
       <p>{{ getTitle(article)}}</p>
     <!-- </main> -->
     <footer class="hoveredNav">
-      <button  :value="article" v-on:click="addToReadingList(article)" type="button" name="select" value="select">{{checkStatusOfArticle(article)}}</button>
+      <button  :value="article" v-on:click="addToReadingList(article)" type="button" name="select" value="select"><router-link to="/reading-list/" class="link"> {{checkStatusOfArticle(article)}}</router-link></button>
       <button><router-link to="/read-article/" class="link">Read</router-link></button>
       <router-view :articleToShow='articleToShow'></router-view>
     </footer>
@@ -16,7 +16,7 @@ import { eventBus } from "../main";
 export default {
   name: "card-component",
   props: ["article", "articleToShow", "getTitle"],
- 
+
   methods: {
     contentCardClass(article) {
       if (article.read) {
@@ -29,6 +29,7 @@ export default {
       if (article.read) {
         eventBus.$emit("remove-article", article);
       } else {
+        article.read = true;
         eventBus.$emit("toggle-reading-list", article);
       }
     },
@@ -39,26 +40,25 @@ export default {
         return "Add to list";
       }
     }
-}
-      //   if (this.checkedArticles.includes(article)) {
-      //     return "Unselect";
-      //   } else {
-      //     return "Select";
-      //   }
-    // }
-    // handleSubmit(article) {
-    //     console.log(article);
+  }
+  //   if (this.checkedArticles.includes(article)) {
+  //     return "Unselect";
+  //   } else {
+  //     return "Select";
+  //   }
+  // }
+  // handleSubmit(article) {
+  //     console.log(article);
 
-    //     eventBus.$emit("toggle-reading-list", article);
-    // }
+  //     eventBus.$emit("toggle-reading-list", article);
+  // }
   // }
 };
 </script>
 
 <style lang="css" scoped>
-
 main {
-    margin: 1rem 1rem 0 1rem;
+  margin: 1rem 1rem 0 1rem;
 }
 
 .card1--content {
@@ -79,13 +79,11 @@ main {
 .card1--content:hover {
   color: #052049;
   background-color: rgba(255, 255, 255, 0.25);
-  
 }
 
 .link {
-    color: lightgray;
-    text-decoration: none;
-
+  color: lightgray;
+  text-decoration: none;
 }
 .selected {
   /* border: solid #65abff thick; */
@@ -97,9 +95,8 @@ main {
   display: grid;
   grid-template-columns: 1fr 1fr;
   justify-items: center;
-  align-items: center;  
+  align-items: center;
   justify-self: end;
-
 }
 
 button {
@@ -107,20 +104,20 @@ button {
   border: none;
   outline: none;
   cursor: pointer;
-  border-radius: 15px; 
-  background-color:  rgb(50, 50, 50);
+  border-radius: 15px;
+  background-color: rgb(50, 50, 50);
   color: lightgray;
   font-size: 1rem;
 }
 
 button:first-of-type {
-  background-color:  #b242bc;
+  background-color: #b242bc;
   color: lightgray;
 }
 
 li {
-    align-self: flex-end;
-    margin-bottom: 1rem;    
+  align-self: flex-end;
+  margin-bottom: 1rem;
 }
 
 p {
@@ -128,8 +125,7 @@ p {
   font-size: 2.6vh;
   height: 10rem;
   overflow: hidden;
-  }
-
+}
 </style>
 
 
