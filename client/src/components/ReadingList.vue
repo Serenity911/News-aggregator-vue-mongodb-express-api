@@ -38,11 +38,18 @@
 import NewsService from "../services/NewsService.js";
 import { eventBus } from "../main";
 import CardComponent from "./CardComponent.vue";
-
+import { log } from "util";
 
 export default {
   name: "reading-list",
-  props: ["filteredArticles", "allSections", "savedReadingListItems", "getSource", "articleToShow", "getTitle"],
+  props: [
+    "filteredArticles",
+    "allSections",
+    "savedReadingListItems",
+    "getSource",
+    "articleToShow",
+    "getTitle"
+  ],
   components: {
     "card-component": CardComponent
   },
@@ -67,6 +74,10 @@ export default {
       // console.log(this.filteredArticles.length !== 0);
     }
   },
+  destroyed() {
+    eventBus.$emit("category-filter-change", "allSections");
+    eventBus.$emit("search-entered", "");
+  },
   methods: {
     handleDelete(item) {
       // NewsService.deleteArticle(item._id);
@@ -74,7 +85,6 @@ export default {
     },
     handleCategorySelection() {
       if (this.selectedSection !== "") {
-        console.log(this.selectedSection);
         eventBus.$emit("category-filter-change", this.selectedSection);
       } else {
         eventBus.$emit("category-filter-change", "allSections");
@@ -146,9 +156,8 @@ h2 {
   border-radius: 15px;
   background-color: rgba(255, 255, 255, 0.1);
   min-width: 13rem;
-  max-width: 15rem; 
+  max-width: 15rem;
   margin: 10px;
-
 }
 
 .category-search {
@@ -157,7 +166,6 @@ h2 {
   grid-template-columns: 1fr 1fr;
   align-items: center;
 }
-
 
 .heading {
   display: flex;

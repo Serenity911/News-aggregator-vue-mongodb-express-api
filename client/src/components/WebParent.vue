@@ -63,9 +63,18 @@ export default {
         );
         return filteredArticlesBySearchTermAndSelectedCategory;
       }
+      if (this.selectedCategory != "allSections") {
+        let filteredArticlesBySelectedCategory = this.filterArticlesByCategory(
+          this.savedReadingListItems,
+          this.selectedCategory
+        );
+
+        return filteredArticlesBySelectedCategory;
+      }
       return this.savedReadingListItems;
     }
   },
+
   mounted() {
     this.fetchReadingList();
 
@@ -97,11 +106,9 @@ export default {
       this.selectedHeader = "readingList";
     });
 
-
-
     eventBus.$on("remove-article", item => {
       console.log(item);
- 
+
       let findArticle = this.savedReadingListItems.find(
         ({ id }) => id === item.id
       );
@@ -146,24 +153,23 @@ export default {
       NewsService.getArticles().then(res => (this.savedReadingListItems = res));
     },
     fetchArticleGuardian(item) {
-      const title = getTitle(item)
-      const source = getSource(item)
+      const title = getTitle(item);
+      const source = getSource(item);
       // source = "guardian";
       console.log(title);
-      console.log(source)
-      if (source==='guardian') {
+      console.log(source);
+      if (source === "guardian") {
         fetchAssistant
           .getArticle(source, item.apiUrl)
           // fetch_assistant_guardian.getArticle(this.selectedArticle.apiUrl)
-          .then(res => (this.articleToShow = res))
-
+          .then(res => (this.articleToShow = res));
       }
     },
-    getSource(item){
-      return item.title ? 'guardian' : 'nyt'
+    getSource(item) {
+      return item.title ? "guardian" : "nyt";
     },
-    getTitle(item){
-      return item.title || item.webTitle
+    getTitle(item) {
+      return item.title || item.webTitle;
     },
     // fetchSections() {
     //   fetch_assistant_guardian.getAllSections()
@@ -193,7 +199,9 @@ export default {
     },
     addNewArticles(article) {
       if (this.savedReadingListItems.length > 0) {
-        console.log("add article but check existing articles removing duplicates");
+        console.log(
+          "add article but check existing articles removing duplicates"
+        );
 
         const mapOfExistingTitles = this.savedReadingListItems.map(
           item => item.title
@@ -210,7 +218,6 @@ export default {
           this.savedReadingListItems.push(article)
         );
       }
-
     },
     readingListClass() {
       return this.selectedHeader === "readingList"
