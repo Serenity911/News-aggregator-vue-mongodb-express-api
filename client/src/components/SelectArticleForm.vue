@@ -47,11 +47,11 @@ export default {
       return this.$route.params.source;
     },
     localArticles() {
-        eventBus.$emit("toggle-select-article-form", this.$route.params.source);
-        return this.articles;
+      eventBus.$emit("toggle-select-article-form", this.$route.params.source);
+      return this.articles;
     }
   },
-  methods: { 
+  methods: {
     isClickable() {
       if (this.checkedArticles.length > 0) {
         return "clickable";
@@ -93,6 +93,8 @@ body {
 #select-article-form {
   display: flex;
   flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.04);
+  padding: 0 5rem;
 }
 
 .heading {
@@ -112,7 +114,6 @@ body {
 .inactive {
   display: none;
 }
-
 
 .hoveredNav > button:hover {
   background-color: #b242bc;

@@ -24,12 +24,12 @@
         You currently have no saved articles. Please go ahead and add your
         favourite articles.
       </h2>
-
+      <div class="section">
       <section class="card-wrapper" v-if="filteredArticles"  v-for="article in filteredArticles">
         <card-component :article="article" :articleToShow='articleToShow' :getTitle="getTitle"/>
+      </section>  
+      </div>
 
-
-      </section>     
     </div>
   </div>
 </template>
@@ -151,15 +151,6 @@ h2 {
   flex-direction: column;
 }
 
-.card-wrapper {
-  padding: 5px;
-  border-radius: 15px;
-  background-color: rgba(255, 255, 255, 0.1);
-  min-width: 13rem;
-  max-width: 15rem;
-  margin: 10px;
-}
-
 .category-search {
   color: aliceblue;
   display: grid;
@@ -204,5 +195,15 @@ select {
 #reading-list {
   background-color: rgba(255, 255, 255, 0.04);
   padding: 0 5rem;
+}
+.section {
+  color: white;
+  min-width: 100%;
+  min-height: 14rem;
+  max-height: 17rem;
+  overflow-x: auto;
+  display: flex;
+  border-radius: 15px;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 </style>

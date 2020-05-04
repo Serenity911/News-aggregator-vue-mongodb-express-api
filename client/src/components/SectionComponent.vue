@@ -47,24 +47,23 @@ export default {
         return "Add to list";
       }
     }
-}
-      //   if (this.checkedArticles.includes(article)) {
-      //     return "Unselect";
-      //   } else {
-      //     return "Select";
-      //   }
-    // }
-    // handleSubmit(article) {
-    //     console.log(article);
+  }
+  //   if (this.checkedArticles.includes(article)) {
+  //     return "Unselect";
+  //   } else {
+  //     return "Select";
+  //   }
+  // }
+  // handleSubmit(article) {
+  //     console.log(article);
 
-    //     eventBus.$emit("toggle-reading-list", article);
-    // }
+  //     eventBus.$emit("toggle-reading-list", article);
+  // }
   // }
 };
 </script>
 
 <style lang="css" scoped>
-
 #section {
   color: white;
   min-width: 100%;
@@ -74,23 +73,21 @@ export default {
   display: flex;
   border-radius: 15px;
   background-color: rgba(255, 255, 255, 0.1);
-
 }
 
-.card-wrapper {
+/* .card-wrapper {
   padding: 5px;
   border-radius: 15px;
   background-color: rgba(255, 255, 255, 0.1);
   min-width: 13rem;
-  max-width: 15rem; 
-  margin: 10px;
-}
+  max-width: 15rem;
+  margin: 10px; */
+/* } */
 
 .selected {
   background-color: rgba(255, 255, 255, 0.1);
   font-style: italic;
 }
-
 </style>
 
 

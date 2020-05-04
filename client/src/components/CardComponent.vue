@@ -107,7 +107,7 @@ button {
   border-radius: 15px;
   background-color: rgb(50, 50, 50);
   color: lightgray;
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
 button:first-of-type {
