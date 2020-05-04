@@ -134,32 +134,6 @@ h2 {
   color: aliceblue;
 }
 
-/* h3 {
-  color: lightgray;
-  font-weight: 100;
-  font-size: 1.1rem;
-  padding: 0 7%;
-  margin-bottom: 0;
-  margin-top: 0;
-  grid-column: 1/3;
-} */
-
-/* h4 {
-  justify-self: self-start;
-  font-size: 1.1em;
-} */
-
-/* h5 {
-  color: aliceblue;
-  justify-self: self-end;
-} */
-
-/* p {
-  max-height: 90px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-} */
-
 .reading-list-wrapper {
   border: 5px 5px 5px 5px solid black;
   display: flex;

@@ -1,7 +1,7 @@
 <template lang="html">
   <div id="section">
               <!-- <div  :class="contentCardClass(article)" v-for="(article, index) in localArticles[section]" @mouseover.self="cardMouseOver(section + index)" @mouseleave.self="cardMouseLeave"> -->
-        <section  v-for="(article, index) in articles[section]" >
+        <section class="card-wrapper" v-for="(article, index) in articles[section]" >
                   <!-- <section  class="section--content" v-for="(article, index) in articles[section]" > -->
           <card-component :article="article" :getTitle="getTitle"></card-component>
         </section>
@@ -77,21 +77,14 @@ export default {
 
 }
 
-/* .section--content {
+.card-wrapper {
   padding: 5px;
   border-radius: 15px;
   background-color: rgba(255, 255, 255, 0.1);
   min-width: 13rem;
   max-width: 15rem; 
-  margin: 10px; 
-  display: flex;
-  flex-direction: row;
-} */
-
-/* .section--content:hover {
-  color: #052049;
-  background-color: rgba(255, 255, 255, 0.25);
-} */
+  margin: 10px;
+}
 
 .selected {
   background-color: rgba(255, 255, 255, 0.1);

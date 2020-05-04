@@ -57,38 +57,22 @@ export default {
 
 <style lang="css" scoped>
 
-
-
-
-#card {
-  /* color: lightgray;
-  background-color: tr;
-  min-width: 10rem;
-  min-height: 13rem;
-  overflow-x: auto;
-  display: grid;
-  grid-template-areas: "main"
-                        "footer";
-  border-radius: 15px;
-  font-size: 2.5vh; */
-}
-
 main {
     margin: 1rem 1rem 0 1rem;
 }
 
 .card1--content {
-    color: lightgray;
-    margin: 0.5rem;
-    padding: 5px;
+  color: lightgray;
+  margin: 0.5rem;
+  padding: 5px;
   border-radius: 15px;
   background-color: rgba(255, 255, 255, 0.1);
-    min-width: 12rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    max-height: 30rem;
-    min-height: 13rem;
+  min-width: 12rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  max-height: 30rem;
+  min-height: 13rem;
   font-size: 2.3vh;
 }
 
@@ -123,12 +107,6 @@ button {
   border: none;
   outline: none;
   cursor: pointer;
-  /* display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; */
-  /* flex-grow: 1; */
-  /* align-self: self-end; */
   border-radius: 15px; 
   background-color:  rgb(50, 50, 50);
   color: lightgray;
@@ -149,7 +127,7 @@ p {
   margin: 0.3em 0.3em 0.5rem 0.3rem;
   font-size: 2.6vh;
   height: 10rem;
-  overflow-y: hidden;
+  overflow: hidden;
   }
 
 </style>
