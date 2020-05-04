@@ -163,6 +163,10 @@ h2 {
   align-items: center;
 }
 
+.card-wrapper {
+  max-width: 15rem;
+}
+
 form {
   display: flex;
   height: 2.3em;
@@ -200,9 +204,9 @@ select {
   color: white;
   min-width: 100%;
   min-height: 14rem;
-  max-height: 17rem;
-  overflow-x: auto;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   border-radius: 15px;
   background-color: rgba(255, 255, 255, 0.1);
 }
