@@ -1,11 +1,12 @@
 <template lang="html">
   <div id="card" class="card1--content">
-    <main>{{ getTitle(article)}}</main>
+    <!-- <main> -->
+      <p>{{ getTitle(article)}}</p>
+    <!-- </main> -->
     <footer class="hoveredNav">
-    <button  :value="article" v-on:click="addToReadingList(article)" type="button" name="select" value="select">{{checkStatusOfArticle(article)}}</button>
-    <button><router-link to="/read-article/" class="link">Read</router-link></button>
-    <router-view :articleToShow='articleToShow'></router-view>
-
+      <button  :value="article" v-on:click="addToReadingList(article)" type="button" name="select" value="select">{{checkStatusOfArticle(article)}}</button>
+      <button><router-link to="/read-article/" class="link">Read</router-link></button>
+      <router-view :articleToShow='articleToShow'></router-view>
     </footer>
   </div>
 </template>
@@ -60,16 +61,16 @@ export default {
 
 
 #card {
-  color: lightgray;
+  /* color: lightgray;
   background-color: tr;
   min-width: 10rem;
-  min-height: 11rem;
+  min-height: 13rem;
   overflow-x: auto;
   display: grid;
   grid-template-areas: "main"
                         "footer";
   border-radius: 15px;
-  font-size: 2.7vw;
+  font-size: 2.5vh; */
 }
 
 main {
@@ -77,11 +78,18 @@ main {
 }
 
 .card1--content {
+    color: lightgray;
     margin: 0.5rem;
     padding: 5px;
   border-radius: 15px;
   background-color: rgba(255, 255, 255, 0.1);
-  min-width: 200px; 
+    min-width: 12rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-height: 30rem;
+    min-height: 13rem;
+  font-size: 2.3vh;
 }
 
 .card1--content:hover {
@@ -105,27 +113,26 @@ main {
   display: grid;
   grid-template-columns: 1fr 1fr;
   justify-items: center;
-  align-items: center;
+  align-items: center;  
+  justify-self: end;
+
 }
 
 button {
-  height: 20px;
+  height: 2rem;
   border: none;
   outline: none;
   cursor: pointer;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  flex-grow: 1;
-  align-self: self-end;
-  margin-bottom: 1rem;
+  justify-content: center; */
+  /* flex-grow: 1; */
+  /* align-self: self-end; */
   border-radius: 15px; 
-  padding: 1rem; 
   background-color:  rgb(50, 50, 50);
   color: lightgray;
-  font-size: 1.8vw;
-
+  font-size: 1rem;
 }
 
 button:first-of-type {
@@ -137,6 +144,14 @@ li {
     align-self: flex-end;
     margin-bottom: 1rem;    
 }
+
+p {
+  margin: 0.3em 0.3em 0.5rem 0.3rem;
+  font-size: 2.6vh;
+  height: 10rem;
+  overflow-y: hidden;
+  }
+
 </style>
 
 

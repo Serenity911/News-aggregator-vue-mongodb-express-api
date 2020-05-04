@@ -5,7 +5,7 @@
     <input type="submit" name="button" value="Save selected Articles" :class="isClickable()" v-on:click="handleSubmit()" ></input>
    
 
-    <div class="sections" v-for="section in sections" >
+    <div class="articles-sections" v-for="section in sections" >
       <h2>{{ section }}</h2>
        <section-component v-if="articles" :section="section" :articles="articles" :sourceSelected="sourceSelected" :getTitle="getTitle" :articleToShow='articleToShow'/>
     </div>
@@ -124,7 +124,7 @@ body {
   background-color: #cde1f9;
 }
 
-.sections {
+.articles-sections {
   border-radius: 15px;
   margin: 0px 10% 0px 10%;
 }
