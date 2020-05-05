@@ -1,8 +1,8 @@
 <template lang="html">
   <div id="card" class="card1--content">
-    <header v-if="this.$route.params.source === 'nyt'" > 
+    <header v-if="this.$route.params.source !== 'nyt' && this.$route.params.source !== 'guardian'"> 
       <h3>{{article.source}}</h3>
-      <h4 :class="article.section">{{ article.section }}</h4>
+      <h4 :class="article.section.toLowerCase()">{{ article.section.toLowerCase() }}</h4>
     </header>
     <p>{{ getTitle(article)}}</p>
     <footer class="hoveredNav">
