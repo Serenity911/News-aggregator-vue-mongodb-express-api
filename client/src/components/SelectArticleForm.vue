@@ -3,7 +3,6 @@
     <h1 class="heading" v-if="sourceSelected === 'guardian' " >Guardian</h1>
     <h1 class="heading" v-if="sourceSelected === 'nyt' " >New York Times</h1>
     <input type="submit" name="button" value="Save selected Articles" :class="isClickable()" v-on:click="handleSubmit()" ></input>
-   
 
     <div class="articles-sections" v-for="section in sections" >
       <h2>{{ section }}</h2>

@@ -11,12 +11,11 @@ export default {
     payload.section = payload.sectionId || payload.section;
     delete payload.sectionId;
 
-    if (!payload.source) {
-      payload.source = "guardian";
-    } else if (payload.source) {
-      payload.source = "nyt";
-    }
-    // payload.source = (!payload.source) ? "guardian" : "nyt";
+    // if (!payload.source) {
+    //   payload.source = "guardian";
+    // } else if (payload.source) {
+    //   payload.source = "nyt";
+    // }
 
     return fetch(baseURL, {
       method: "POST",
@@ -29,12 +28,4 @@ export default {
       method: "DELETE"
     }).then((res) => res.json())
   }
-  // extension? for status read / not-read
-  // updateArticle(id, payload) {
-  //   return fetch(baseURL + id, {
-  //     method: 'POST',
-  //     body: JSON.stringify(payload),
-  //     headers: { 'Content-Type': 'application/json'}
-  //   })
-  //   .then(res => res.json())
 };

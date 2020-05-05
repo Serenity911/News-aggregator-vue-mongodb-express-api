@@ -98,7 +98,6 @@ export default {
     });
 
     eventBus.$on("remove-article", item => {
-
       let findArticle = this.savedReadingListItems.find(
         ({ id }) => id === item.id
       );
@@ -155,7 +154,12 @@ export default {
       }
     },
     getSource(item) {
-      return item.webTitle ? "guardian" : "nyt";
+      if (item.webTitle) {
+        return "guardian";
+      }
+      if (item.title) {
+        return "nyt";
+      }
     },
     getTitle(item) {
       return item.title || item.webTitle;
@@ -169,7 +173,6 @@ export default {
         return articles;
       } else {
         let filteredArticlesByCategory = articles.filter(article => {
-
           return article.section.toLowerCase() === category;
         });
         return filteredArticlesByCategory;
@@ -186,7 +189,7 @@ export default {
     },
     addNewArticles(article) {
       if (this.savedReadingListItems.length > 0) {
-
+        
         const mapOfExistingTitles = this.savedReadingListItems.map(
           item => item.title
         );

@@ -63,9 +63,6 @@ export default {
   watch: {
     search: function() {
       eventBus.$emit("search-entered", this.search);
-      // },
-      // filteredArticles: function() {
-      //   this.filteredArticles
     }
   },
   computed: {
@@ -79,7 +76,6 @@ export default {
   },
   methods: {
     handleDelete(item) {
-      // NewsService.deleteArticle(item._id);
       eventBus.$emit("remove-article", item);
     },
     handleCategorySelection() {
@@ -87,35 +83,6 @@ export default {
         eventBus.$emit("category-filter-change", this.selectedSection);
       } else {
         eventBus.$emit("category-filter-change", "allSections");
-      }
-    },
-    contentCardClass() {
-      // if cardover = true --> class is hovered more things are shown
-      // else
-      if (this.cardover) {
-        return "card--content selected";
-      } else {
-        return "card--content";
-      }
-    },
-    cardMouseOver(index, item) {
-      this.cardOverIndex = index;
-    },
-    cardMouseLeave() {
-      this.cardOverIndex = false;
-    },
-    // handleRead(item) {
-    //   if (item.source === "guardian") {
-    //     eventBus.$emit("toggle-show-article", item);
-    //   } else {
-    //     window.open(item.url);
-    //   }
-    // },
-    itemSource(item) {
-      if (item.source === "guardian") {
-        return "Guardian";
-      } else {
-        return "New York Times";
       }
     }
   }

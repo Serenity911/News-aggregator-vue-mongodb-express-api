@@ -20,13 +20,13 @@ export default {
   name: "card-component",
   props: ["article", "articleToShow", "getTitle", "getSource"],
   methods: {
-    contentCardClass(article) {
-      if (article.read) {
-        return "card--content selected";
-      } else {
-        return "card--content";
-      }
-    },
+    // contentCardClass(article) {
+    //   if (article.read) {
+    //     return "card--content selected";
+    //   } else {
+    //     return "card--content";
+    //   }
+    // },
     addToReadingList(article) {
       if (article.read) {
         eventBus.$emit("remove-article", article);
