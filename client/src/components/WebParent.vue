@@ -7,9 +7,7 @@
     <p id=nav>
         <router-link :to="{name: 'select-source'}" > Add Article </router-link>
         <router-link :to="{name: 'reading-list'}"> Reading List </router-link>        
-        <!-- <router-link :to="{name: 'read-article', params: {articleToShow: 'articleToShow'}}"> Read Article </router-link> -->
     </p>
-    <!-- <router-view></router-view> -->
     <router-view :sections='sections' :title='title' :articles='articles' :filteredArticles='filteredArticles' :allSections='allSections' :savedReadingListItems='savedReadingListItems' :articleToShow='articleToShow' :getSource='getSource' :getTitle='getTitle'></router-view>
 
     </main>
@@ -32,17 +30,10 @@ export default {
     return {
       articles: null,
       savedReadingListItems: [],
-
       selectedArticle: null,
       articleToShow: null,
-
       searchTerm: "",
       selectedCategory: "allSections",
-
-      // sourceActive: false,
-      // articleFormActive: true,
-      // readingListActive: true,
-      // showArticleActive: false,
       allSections: ["business", "technology", "food", "world", "travel"],
       selectedHeader: "readingList",
       sections: null,
@@ -120,7 +111,7 @@ export default {
     eventBus.$on("toggle-show-article", item => {
       // this.selectedArticle = item;
       this.fetchArticleGuardian(item);
-      this.selectedHeader = "readingList";
+      // this.selectedHeader = "readingList";
     });
   },
   methods: {
@@ -153,11 +144,9 @@ export default {
       NewsService.getArticles().then(res => (this.savedReadingListItems = res));
     },
     fetchArticleGuardian(item) {
-      const title = getTitle(item);
-      const source = getSource(item);
-      // source = "guardian";
-      console.log(title);
-      console.log(source);
+      const title = this.getTitle(item);
+      const source = this.getSource(item);
+      console.log("fetch article " + item);
       if (source === "guardian") {
         fetchAssistant
           .getArticle(source, item.apiUrl)

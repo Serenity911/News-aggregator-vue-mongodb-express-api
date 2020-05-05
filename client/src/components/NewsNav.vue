@@ -1,6 +1,10 @@
 <template lang="html">
-  <div id="news-nav">
-    <ul class="topnav">
+  <!-- <div id="news-nav">
+        <router-link :to="{name: 'select-source'}" > Add Article </router-link>
+        <router-link :to="{name: 'reading-list'}"> Reading List </router-link>
+        <!-- <router-view :sections='sections' :title='title' :articles='articles' :filteredArticles='filteredArticles' :allSections='allSections' :savedReadingListItems='savedReadingListItems' :articleToShow='articleToShow' :getSource='getSource' :getTitle='getTitle'></router-view> -->
+        <!-- <router-view /> -->
+    <!-- <ul class="topnav">
       <li>
       <button
         type="button"
@@ -21,7 +25,7 @@
         <img class="plus" src="../assets/plus.png" />ADD
       </button>
       </li>
-    </ul>
+    </ul> --> 
   </div>
 </template>
 

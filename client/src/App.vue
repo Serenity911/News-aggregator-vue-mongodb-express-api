@@ -4,11 +4,11 @@
       href="https://fonts.googleapis.com/css?family=IM+Fell+English"
       rel="stylesheet"
     />
-    <p id=nav>
+    <!-- <p id=nav>
         <router-link to="/add-article"> Add Article </router-link>
         <router-link to="/reading-list"> Reading List </router-link>        
         <router-link to="/read-article"> Read Article </router-link>
-    </p>
+    </p> -->
     <web-parent />
   </div>
 </template>
@@ -19,8 +19,8 @@ import WebParent from "./components/WebParent.vue";
 export default {
   name: "app",
   components: {
-    "web-parent": WebParent,
-     }
+    "web-parent": WebParent
+  }
 };
 </script>
 
@@ -34,7 +34,6 @@ body {
 #nav {
   color: white;
 }
-
 </style>
 
 

@@ -7,7 +7,7 @@
     <p>{{ getTitle(article)}}</p>
     <footer class="hoveredNav">
       <button  :value="article" v-on:click="addToReadingList(article)" type="button" name="select" value="select"><router-link to="/reading-list/" class="link"> {{checkStatusOfArticle(article)}}</router-link></button>
-      <button><router-link to="/read-article/" class="link">Read</router-link></button>
+      <button v-on:click="handleShowArticle(article)"><router-link to="/read-article/" class="link">Read</router-link></button>
       <router-view :articleToShow='articleToShow'></router-view>
     </footer>
   </div>
@@ -18,9 +18,6 @@ import { eventBus } from "../main";
 export default {
   name: "card-component",
   props: ["article", "articleToShow", "getTitle"],
-  mounted() {
-    console.log(this.$route.params);
-  },
   methods: {
     contentCardClass(article) {
       if (article.read) {
@@ -43,6 +40,9 @@ export default {
       } else {
         return "Add to list";
       }
+    },
+    handleShowArticle(article) {
+      eventBus.$emit("toggle-show-article", article);
     }
   }
   //   if (this.checkedArticles.includes(article)) {

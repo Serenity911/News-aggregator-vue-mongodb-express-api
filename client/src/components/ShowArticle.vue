@@ -29,12 +29,12 @@ article {
     margin: 2em;
     padding: 1em;
     text-align: justify;
-    background-color: #F6C19877;
+    background-color: rgba(255, 255, 255, 0.4);
     border-radius: 15px;
 }
 
 article >>> figure   {
-  border-left: 4px solid pink;
+  /* border-left: 4px solid pink; */
   font-size: 1em;
   padding-left: 1em;
 }
