@@ -1,131 +1,79 @@
 <template lang="html">
   <div id="select-article-form">
-    <!-- each card is a container for the articles of a section -->
     <h1 class="heading" v-if="sourceSelected === 'guardian' " >Guardian</h1>
     <h1 class="heading" v-if="sourceSelected === 'nyt' " >New York Times</h1>
-    <input type="submit" name="button" value="Save selected Articles" :class="isClickable()" v-on:click="handleSubmit()" ></input>
 
-    <div class="sections" v-for="section in localSections" >
+    <div class="articles-sections" v-for="section in sections" >
       <h2>{{ section }}</h2>
-      <section class="card"  >
-        <div  :class="contentCardClass(article)" v-for="(article, index) in localArticles[section]" @mouseover.self="cardMouseOver(section + index)" @mouseleave.self="cardMouseLeave">
-          <h3 >{{ article[`${localTitle}`] }}</h3>
-
-          <div class="hoveredNav" v-if="cardOver === section + index">
-            <button  :value="article" v-on:click="addToCheckedArticles(article)" type="button" name="select" value="select">{{checkStatusOfArticle(article)}}</button>
-
-            <button type="button" name="button" v-on:click="handleShowArticle(article)" :value="article">Read</button>
-          </div>
-
-
-        </div>
-      </section>
+       <section-component v-if="articles" :section="section" :articles="articles" :sourceSelected="sourceSelected" :getTitle="getTitle" :articleToShow='articleToShow'/>
     </div>
   </div>
 </template>
 
 <script>
-import {eventBus} from '../main'
-import NewsService from '../services/NewsService'
+import { eventBus } from "../main";
+import NewsService from "../services/NewsService";
+import SectionComponent from "./SectionComponent.vue";
 
 export default {
   name: "select-article-form",
+
+  components: {
+    "section-component": SectionComponent
+  },
   data() {
     return {
       checkedArticles: [],
-      localArticles: this.articles,
-      localSections: this.sections,
-      localTitle: this.title,
       cardOver: false
+    };
+  },
 
+  props: ["articles", "sections", "title", "articleToShow", "getTitle"],
+  created() {
+    sections: {
+      return this.sections;
+    }
+    title: {
+      return this.title;
     }
   },
-  props: ['articles', 'sections', 'title', 'sourceSelected'],
-  // computed: {
-  //
-  // },
-  watch: {
-    title: function() {
-      this.localTitle = this.title
+  mounted() {
+    eventBus.$emit("toggle-select-article-form", this.$route.params.source);
+  },
+  computed: {
+    sourceSelected() {
+      return this.$route.params.source;
     },
-    sections: function() {
-      this.localSections = this.sections
+    localArticles() {
+      eventBus.$emit("toggle-select-article-form", this.$route.params.source);
+      return this.articles;
     }
   },
   methods: {
-    handleSubmit() {
-      event.preventDefault()
-      if (this.checkedArticles.length > 0) {
-        if (this.sourceSelected === "nyt") {
-          this.checkedArticles.forEach(item => item.section = item.section.toLowerCase())
-        }
-
-        eventBus.$emit('toggle-reading-list', this.checkedArticles)
-        this.checkedArticles = []
-      }
-    },
     isClickable() {
       if (this.checkedArticles.length > 0) {
-        return "clickable"
-      }
-      else {
-        return "inactive"
-      }
-    },
-    handleShowArticle(item){
-      if (this.sourceSelected === "guardian") {
-        eventBus.$emit('toggle-show-article', item)
-      }
-      else {
-        window.open(item.url)
+        return "clickable";
+      } else {
+        return "inactive";
       }
     },
     cardMouseOver(index) {
-      this.cardOver = index
+      this.cardOver = index;
     },
     cardMouseLeave() {
-      this.cardOver = false
-    },
-    addToCheckedArticles(article) {
-      if(this.checkedArticles.includes(article)) {
-        let indexOfArticleIncluded = this.checkedArticles.indexOf(article)
-        this.checkedArticles.splice(indexOfArticleIncluded, 1)
-      }
-      else {
-        this.checkedArticles.push(article)
-      }
-    },
-    contentCardClass(article) {
-      if (this.checkedArticles.includes(article)) {
-        return "card--content selected"
-      }
-      else {
-        return "card--content"
-      }
-    },
-    checkStatusOfArticle(article) {
-      if (this.checkedArticles.includes(article)) {
-        return "Unselect"
-      }
-      else {
-        return "Select"
-      }
-    },
-
-    handleRead(item) {
-      if (this.sourceSelected === "guardian") {
-        eventBus.$emit('toggle-show-article', item)
-      }
-      else {
-        window.open(item.url)
-      }
+      this.cardOver = false;
     }
   }
-}
+};
 </script>
 
 <style lang="css" scoped>
+h1 {
+  color: #b242bc;
+}
+
 h2 {
+  color: #7a99ff;
   text-transform: capitalize;
 }
 
@@ -143,6 +91,8 @@ body {
 #select-article-form {
   display: flex;
   flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.04);
+  width: 100vw;
 }
 
 .heading {
@@ -152,42 +102,6 @@ body {
 
 #save_all_items {
   height: 70%;
-
-}
-
-
-
-.card {
-  background-color: #F6C198;
-  min-width: 100%;
-  min-height: 200px;
-  overflow-x: auto;
-  display: flex;
-  border-radius: 15px;
-}
-
-.card--content {
-  padding: 5px;
-  border-radius: 15px;
-  background-color: white;
-  min-width: 200px;
-  margin: 10px;
-  /* border: 1px solid black; */
-  /* display: flex; */
-  /* flex-wrap: wrap; */
-  align-content: space-between;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-
-.card--content:hover {
-  background-color: #CDE1F9;
-}
-
-h3 {
-  padding: 0 5%;
-  margin-bottom: 0;
-  grid-column: 1/3;
 }
 
 .clickable {
@@ -199,46 +113,20 @@ h3 {
   display: none;
 }
 
-.hoveredNav {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-self: center;
-  grid-column: 1/3;
-  justify-items: stretch;
-  align-items: center;
-  align-self: stretch;
-}
-
-button {
-  height: 20px;
-  background-color: transparent;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex-grow: 1;
-
-}
-/* button {
-  height: 30%;
-
-} */
-
 .hoveredNav > button:hover {
-  background-color: #F6C198;
+  background-color: #b242bc;
   filter: hue-rotate(180);
 }
 
 .selected {
   border: solid #65abff thick;
-  background-color: #CDE1F9;
+  background-color: #cde1f9;
 }
 
-.sections {
+.articles-sections {
   border-radius: 15px;
-  margin: 0px 10% 0px 10%;
+  margin: 0px 2rem 0px 2rem;
+  display: flex;
+  flex-direction: column;
 }
 </style>

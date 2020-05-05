@@ -1,5 +1,5 @@
 <template lang="html">
-  <div v-if="articleToShow" class="">
+  <div id="show-article">
     <article>
       <header>
       <h2>
@@ -13,28 +13,32 @@
 </template>
 
 <script>
+import { eventBus } from "../main";
+
 export default {
   name: "show-article",
-  props: ['articleToShow']
-}
+  props: ["articleToShow"],
+  destroyed() {
+    eventBus.$emit("toggle-show-article", null);
+  }
+};
 </script>
 
 <style lang="css" scoped>
-
 article {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
-    "Droid Sans", "Helvetica Neue", sans-serif;
-    font-size: 1.5em;
-    margin: 2em;
-    padding: 1em;
-    text-align: justify;
-    background-color: #F6C19877;
-    border-radius: 15px;
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
+  font-size: 1.5em;
+  margin: 2em;
+  padding: 1em;
+  text-align: justify;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 15px;
 }
 
-article >>> figure   {
-  border-left: 4px solid pink;
+article >>> figure {
+  /* border-left: 4px solid pink; */
   font-size: 1em;
   padding-left: 1em;
 }

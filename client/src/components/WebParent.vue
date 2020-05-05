@@ -1,38 +1,23 @@
 <template lang="html">
   <div id="web-parent">
     <header>
-      <!-- add an onclick after refactoring the eventBUs -->
-      <!-- <div :class="readingListClass()" v-on:click="toggleReadingList">
-      <p>Reading List</p>
-    </div>
-    <div :class="addArticleClass()" v-on:click="toggleSelectSource">
-    <p>Add Article</p>
-  </div> -->
-</header>
-<!-- <h1>{{ sourceActive }}</h1> -->
-<!-- <pre>{{ JSON.stringify(articles, null, 2) }}</pre> -->
+      <h1>read://it</h1>
+    </header>
+    <main> 
+    <nav id=nav>
+        <router-link :to="{name: 'select-source'}" > Add Article </router-link>
+        <router-link :to="{name: 'reading-list'}"> Reading List </router-link>        
+    </nav>
+    <router-view :sections='sections' :title='title' :articles='articles' :filteredArticles='filteredArticles' :allSections='allSections' :savedReadingListItems='savedReadingListItems' :articleToShow='articleToShow' :getSource='getSource' :getTitle='getTitle'></router-view>
 
-<!-- <news-nav :allSections="allSections"></news-nav> -->
-<news-nav :articleFormActive="articleFormActive" :readingListActive="readingListActive" :sourceActive="sourceActive" :showArticleActive="showArticleActive" ></news-nav>
-
-
-<!-- <select-article-form v-if="articleFormActive"  :articles="articles" :sections="sections"/> -->
-
-<!-- <select-article-form v-if="sections" :articles="articles" :sections="sections" :title='title'/> -->
-<select-article-form v-if="articleFormActive" :sourceSelected="sourceSelected" :articles="articles" :sections="sections" :title='title'/>
-<source-select v-if="sourceActive"/>
-<reading-list v-if="readingListActive" :filteredArticles="filteredArticles" :allSections="allSections" :savedReadingListItems="savedReadingListItems" />
-<show-article v-if="showArticleActive" :articleToShow="articleToShow"/>
-</div>
-
+    </main>
+  </div>
 </template>
 
 <script>
 import { eventBus } from "../main";
 import NewsService from "../services/NewsService.js";
-
 import fetchAssistant from "../services/FetchAssistant.js";
-
 import SelectArticleForm from "./SelectArticleForm.vue";
 import NewsNav from "./NewsNav.vue";
 import SourceSelect from "./SourceSelect.vue";
@@ -43,19 +28,12 @@ export default {
   name: "web-parent",
   data() {
     return {
-      articles: {},
+      articles: null,
       savedReadingListItems: [],
-
       selectedArticle: null,
       articleToShow: null,
-
       searchTerm: "",
       selectedCategory: "allSections",
-
-      sourceActive: false,
-      articleFormActive: false,
-      readingListActive: true,
-      showArticleActive: false,
       allSections: ["business", "technology", "food", "world", "travel"],
       selectedHeader: "readingList",
       sections: null,
@@ -65,7 +43,7 @@ export default {
   },
   computed: {
     filteredArticles: function() {
-      if (this.searchTerm || this.selectedCategory) {
+      if (this.searchTerm != "" && this.selectedCategory) {
         let filteredArticlesBySearchTerm = this.filterArticlesBySearchTerm(
           this.savedReadingListItems,
           this.searchTerm
@@ -76,9 +54,18 @@ export default {
         );
         return filteredArticlesBySearchTermAndSelectedCategory;
       }
+      if (this.selectedCategory != "allSections") {
+        let filteredArticlesBySelectedCategory = this.filterArticlesByCategory(
+          this.savedReadingListItems,
+          this.selectedCategory
+        );
+
+        return filteredArticlesBySelectedCategory;
+      }
       return this.savedReadingListItems;
     }
   },
+
   mounted() {
     this.fetchReadingList();
 
@@ -94,67 +81,88 @@ export default {
     });
 
     eventBus.$on("toggle-select-source", () => {
-      this.toggleSelectSource();
+      this.articles = {};
       this.selectedHeader = "addNewArticle";
     });
 
     eventBus.$on("toggle-select-article-form", source => {
       this.sourceSelected = source;
       this.fetchAllArticles(this.allSections, source);
-      this.toggleSelectArticleForm();
       this.selectedHeader = "addNewArticle";
     });
 
     eventBus.$on("toggle-reading-list", payload => {
+      this.articles = {};
       this.addNewArticles(payload);
-      this.toggleReadingList();
       this.selectedHeader = "readingList";
     });
 
     eventBus.$on("remove-article", item => {
-      const indexOfDeleted = this.savedReadingListItems.indexOf(item);
-      this.savedReadingListItems.splice(indexOfDeleted, 1);
+      let findArticle = this.savedReadingListItems.find(
+        ({ id }) => id === item.id
+      );
+      NewsService.deleteArticle(findArticle._id).then(
+        res => (this.savedReadingListItems = res)
+      );
     });
 
     eventBus.$on("toggle-show-article", item => {
-      this.selectedArticle = item;
-      this.fetchArticleGuardian();
-      this.toggleShowArticle();
-      this.selectedHeader = "readingList";
+      if (item) {
+        this.fetchArticleGuardian(item);
+      } else {
+        this.articleToShow = null;
+      }
     });
   },
   methods: {
     fetchAllArticles(arrayOfCategories, source) {
+      this.articles = {};
       const promises = arrayOfCategories.map(section => {
-        // return this.fetchAssistant(source, category.toLowerCase())
         return fetchAssistant
           .getArticleBySection(source, section)
-          .then(articlesToAdd => {
+          .then(fetchedArticles => {
+            let articlesToAdd = [];
+            fetchedArticles.forEach(element => {
+              articlesToAdd.push({
+                ...element,
+                read: this.isArticleInList(element),
+                source: this.getSource(element)
+              });
+            });
             this.articles[section] = articlesToAdd;
           })
           .then(res => {
             this.title = this.selectTitleProperty();
-            console.log("is it logging?", this.title);
           })
           .catch(console.error);
       });
       Promise.all(promises).then(sections => {
         this.sections = Object.keys(this.articles);
-        console.log("line after section:", this.sections);
       });
     },
     fetchReadingList() {
       NewsService.getArticles().then(res => (this.savedReadingListItems = res));
     },
-    fetchArticleGuardian() {
-      const source = "guardian";
-      console.log(this.selectedArticle);
-      if (this.selectedArticle) {
+    fetchArticleGuardian(item) {
+      const title = this.getTitle(item);
+      const source = this.getSource(item);
+      if (source === "guardian") {
         fetchAssistant
-          .getArticle(source, this.selectedArticle.apiUrl)
+          .getArticle(source, item.apiUrl)
           // fetch_assistant_guardian.getArticle(this.selectedArticle.apiUrl)
           .then(res => (this.articleToShow = res));
       }
+    },
+    getSource(item) {
+      if (item.webTitle) {
+        return "guardian";
+      }
+      if (item.title) {
+        return "nyt";
+      }
+    },
+    getTitle(item) {
+      return item.title || item.webTitle;
     },
     // fetchSections() {
     //   fetch_assistant_guardian.getAllSections()
@@ -171,28 +179,30 @@ export default {
       }
     },
     filterArticlesBySearchTerm(articles, searchTerm) {
-      const foundArticles = articles.filter(article => {
-        const title = article.webTitle || article.title;
-        return title.toLowerCase().includes(searchTerm);
-      });
-      return foundArticles;
+      if (articles.length > 0) {
+        const foundArticles = articles.filter(article => {
+          const title = article.webTitle || article.title;
+          return title.toLowerCase().includes(searchTerm);
+        });
+        return foundArticles;
+      }
     },
-    addNewArticles(payload) {
-      // const mapOfTitles = payload.map(item => item.title || item.webTitle)
-      const mapOfExistingTitles = this.savedReadingListItems.map(
-        item => item.title
-      );
-      const newItems = payload.filter(
-        item => !mapOfExistingTitles.includes(item.title || item.webTitle)
-      );
+    addNewArticles(article) {
+      if (this.savedReadingListItems.length > 0) {
+        const mapOfExistingTitles = this.savedReadingListItems.map(
+          item => item.title
+        );
 
-      newItems.forEach(item => {
-        NewsService.postArticles(item).then(article =>
+        if (!mapOfExistingTitles.includes(article.title || article.webTitle)) {
+          NewsService.postArticles(article).then(article =>
+            this.savedReadingListItems.push(article)
+          );
+        }
+      } else {
+        NewsService.postArticles(article).then(article =>
           this.savedReadingListItems.push(article)
         );
-      });
-
-      // newItems.forEach(item => this.savedReadingListItems.push(item) )
+      }
     },
     readingListClass() {
       return this.selectedHeader === "readingList"
@@ -204,39 +214,18 @@ export default {
         ? "headerActive"
         : "headerInactive";
     },
-    // getReadingList() {
-    //
-    // },
-    toggleSelectSource() {
-      this.sourceActive = true;
-      this.readingListActive = false;
-      this.articleFormActive = false;
-      this.showArticleActive = false;
-    },
-    toggleSelectArticleForm() {
-      this.articleFormActive = true;
-      this.sourceActive = false;
-      this.readingListActive = false;
-      this.showArticleActive = false;
-    },
-    toggleReadingList() {
-      this.articleFormActive = false;
-      this.sourceActive = false;
-      this.readingListActive = true;
-      this.showArticleActive = false;
-    },
-    toggleShowArticle() {
-      this.articleFormActive = false;
-      this.sourceActive = false;
-      this.readingListActive = false;
-      this.showArticleActive = true;
-    },
     selectTitleProperty() {
       if (this.sourceSelected === "nyt") {
         return "title";
       } else if (this.sourceSelected === "guardian") {
         return "webTitle";
       }
+    },
+    isArticleInList(article) {
+      const mapOfExistingTitles = this.savedReadingListItems.map(
+        item => item.title
+      );
+      return mapOfExistingTitles.includes(article.title || article.webTitle);
     }
   },
   components: {
@@ -251,22 +240,48 @@ export default {
 
 <style lang="css" scoped>
 header {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+h1 {
+  color: #7a99ff;
+  font-size: 3rem;
+  text-align: center;
+  padding: 0.5rem;
+  font-family: "IM Fell English", serif;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+}
+
+nav {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  justify-items: stretch;
-  background-color: darkslategrey;
-  color: white;
+  background-color: rgba(255, 255, 255, 0.07);
+  padding: 1rem;
+  justify-items: center;
+  width: 100vw;
   text-align: center;
+  margin-bottom: 3rem;
 }
-.headerActive {
-  background-color: #a4dcc0;
-  color: #2f4f4f;
-  border: #45b097 solid;
-  font-weight: bold;
+nav > a {
+  text-decoration: none;
+  font-size: 3rem;
+  color: #b242bc;
+  width: 17rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  /* color: #7a99ff; */
+  color: lightgray;
+  border: 1px solid black;
+  padding: 0.5rem;
+  font-family: "IM Fell English", serif;
 }
-.headerInactive:hover {
-  background-color: #68a198;
-  color: #2f4f4f;
-  font-weight: bold;
+
+nav > a:hover {
+  background-color: rgba(255, 255, 255, 0.25);
 }
 </style>

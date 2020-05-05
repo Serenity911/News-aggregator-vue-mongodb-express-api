@@ -1,136 +1,91 @@
 <template lang="">
-  <div id="reading-list">
-
-    <div class="reading-list">
+  <div id="reading-list" >
+    <div class="reading-list-wrapper">
       <div class="heading">
-
         <div class="category-search" v-if="areThereArticles">
           <label for="">Category</label>
-          <select  v-model="selectedSection" v-on:change="handleCategorySelection">
-            <option value="allSections"  >All Categories</option>
-            <option v-for="section in allSections" :value="section">{{section}}</option>
+          <select
+            v-model="selectedSection"
+            v-on:change="handleCategorySelection"
+          >
+            <option value="allSections">All Categories</option>
+            <option v-for="section in allSections" :value="section">{{
+              section
+            }}</option>
           </select>
         </div>
 
-        <h1>reading list</h1>
+        <h1>//reading list</h1>
         <form v-if="areThereArticles" v-on:submit.prevent>
-          <input  type="text" v-model="search" placeholder="Search">
+          <input type="text" v-model="search" placeholder="Search" />
         </form>
       </div>
-      <h2 v-if="!areThereArticles">You currently have no saved articles. Please go ahead and add your favourite articles.</h2>
+      <h2 v-if="!areThereArticles">
+        You currently have no saved articles. Please go ahead and add your
+        favourite articles.
+      </h2>
+      <div class="section">
+      <section class="card-wrapper" v-if="filteredArticles"  v-for="article in filteredArticles">
+        <card-component :article="article" :articleToShow='articleToShow' :getTitle="getTitle" />
+      </section>  
+      </div>
 
-
-      <section class="card" v-if="areThereArticles">
-        <div @mouseover.self="cardMouseOver(index, item)" @mouseleave.self="cardMouseLeave()" :class="contentCardClass()" v-for="(item, index) in filteredArticles">
-          <header>
-            <h5>{{ itemSource(item) }}</h5>
-            <h4 :class="item.section">{{ item.section }}</h4>
-          </header>
-          <h3>{{ item.title }}</h3>
-
-          <div class="hoveredNav" v-if="cardOverIndex === index">
-            <!-- <div class="hoveredNav" > -->
-            <a  v-on:click="handleDelete(item)"><img class="cross" src="../assets/cross.png">Remove</a>
-            <a  v-on:click="handleRead(item)"><img class="cross" src="../assets/view.svg"> {{readButtonText}}</a>
-
-          </div>
-
-          <!-- <a :href="fetchArticleAPI"></a> -->
-          <!-- <p>news and possibly an image. There will almost certainly be a headline here but mayebe not an image. A plus button will most likely be present and that will be just awesome. cqcn eqfqfv vdwfv fqsfcsq feqfq fqfqfwq fwqdfwqf fwqfwq fwqfqw fqwfq</p> -->
-        </div>
-      </section>
     </div>
-
   </div>
-
 </template>
 
 <script>
-import NewsService from '../services/NewsService.js'
-import {eventBus} from '../main'
+import NewsService from "../services/NewsService.js";
+import { eventBus } from "../main";
+import CardComponent from "./CardComponent.vue";
+import { log } from "util";
 
 export default {
   name: "reading-list",
-  props: ['filteredArticles', 'allSections', 'savedReadingListItems'],
+  props: [
+    "filteredArticles",
+    "allSections",
+    "savedReadingListItems",
+    "articleToShow",
+    "getTitle"
+  ],
+  components: {
+    "card-component": CardComponent
+  },
   data() {
     return {
       search: "",
       selectedSection: "",
-      cardOverIndex: false,
-      readButtonText: ""
-
-    }
+      cardOverIndex: false
+    };
   },
   watch: {
     search: function() {
-      eventBus.$emit("search-entered", this.search)
-      // },
-      // filteredArticles: function() {
-      //   this.filteredArticles
+      eventBus.$emit("search-entered", this.search);
     }
   },
   computed: {
-    areThereArticles: function () {
-      return this.savedReadingListItems.length !== 0
-      // console.log(this.filteredArticles.length !== 0);
+    areThereArticles: function() {
+      return this.savedReadingListItems.length !== 0;
     }
+  },
+  destroyed() {
+    eventBus.$emit("category-filter-change", "allSections");
+    eventBus.$emit("search-entered", "");
   },
   methods: {
     handleDelete(item) {
-      NewsService.deleteArticle(item._id)
-      eventBus.$emit('remove-article', item)
+      eventBus.$emit("remove-article", item);
     },
     handleCategorySelection() {
-      if(this.selectedSection !== "" ){
-        console.log(this.selectedSection);
-        eventBus.$emit('category-filter-change', this.selectedSection)
-      }
-      else {
-        eventBus.$emit('category-filter-change', "allSections")
-      }
-    },
-    contentCardClass() {
-      // if cardover = true --> class is hovered more things are shown
-      // else
-      if (this.cardover) {
-        return "card--content selected"
-      }
-      else {
-        return "card--content"
-      }
-    },
-    cardMouseOver(index, item) {
-      this.cardOverIndex = index
-      if (item.source === "guardian") {
-        return this.readButtonText = "Read"
-      }
-      else {
-        return this.readButtonText = "Open"
-      }
-    },
-    cardMouseLeave() {
-      this.cardOverIndex = false
-      this.readButtonText = ""
-
-    },
-    handleRead(item) {
-      if (item.source === "guardian") {
-        eventBus.$emit('toggle-show-article', item)
-      }
-      else {
-        window.open(item.url)
-      }
-    },
-    itemSource(item) {
-      if (item.source === "guardian") {
-        return "Guardian"
-      }
-      else {
-        return "New York Times"
+      if (this.selectedSection !== "") {
+        eventBus.$emit("category-filter-change", this.selectedSection);
+      } else {
+        eventBus.$emit("category-filter-change", "allSections");
       }
     }
   }
-}
+};
 </script>
 
 <style lang="css" scoped>
@@ -140,129 +95,41 @@ body {
   height: 100%;
 }
 
-body {
-  background-color: #D4C1EC;
-}
-
 h1 {
+  color: #b242bc;
   text-align: center;
-  border: 2px solid black;
   border-radius: 15px;
   padding: 2px 5px 2px 5px;
   align-self: center;
   margin-left: 1em;
   margin-right: 1em;
-
 }
 
-/* h2 {
-border: 2px solid black;
-border-radius: 15px;
-padding: 2px 5px 2px 5px;
-} */
-
-h3 {
-  padding: 0 5%;
-  margin-bottom: 0;
-  grid-column: 1/3;
+h2 {
+  color: aliceblue;
 }
 
-h4 {
-  justify-self: self-start;
-  font-size: 1.1em;
-}
-
-h5 {
-  justify-self: self-end;
-
-}
-
-p {
-  max-height: 90px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.reading-list {
+.reading-list-wrapper {
   border: 5px 5px 5px 5px solid black;
-  /* size: 100%; */
   display: flex;
   align-items: center;
   flex-direction: column;
 }
 
-.card {
-  background-color: #F6C198;
-  /* border: 3px solid black; */
-  border-radius: 15px;
-  padding: 10px 2px 10px 2px;
-  /* this seems to cause an issue. Commented out and delete when sure */
-  /* min-height: 500px; */
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  width: 940px;
-}
-
-.card--content {
-  border-radius: 25px;
-  background-color: ghostwhite;
-  border: 1px solid black;
-  min-width: 200px;
-  max-width: 200px;
-  margin: 5px;
-  padding: 10px;
-  min-height: 215px;
-  max-height: 215px;
+.category-search {
+  color: aliceblue;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 30px auto 1fr;
-  justify-items: center;
-}
-
-.card--content:hover {
-  background-color: #CDE1F9;
-}
-
-a {
-  background-color: transparent;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-
-}
-
-a:hover {
-  background-color: #F6C198;
-
-}
-
-/* .category-search {
-  display: flex;
-  flex-direction: column;
-
-} */
-.cross {
-  box-sizing: border-box;
-  height: 25px;
-  opacity: 0.4;
-  margin: 10%;
-
 }
 
 .heading {
-  /* display: grid;
-  grid-template-columns: 1fr 1fr 1fr ;
-  justify-content: center;
-  align-items: center;
-  grid-gap: 1em; */
   display: flex;
   align-items: center;
+}
+
+.card-wrapper {
+  max-width: 15rem;
 }
 
 form {
@@ -274,43 +141,18 @@ select {
   height: 3em;
 }
 
-
-.hoveredNav {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-self: center;
-  grid-column: 1/3;
-  justify-items: stretch;
-  align-items: center;
-  align-self: end;
-  margin-bottom: 10%;
+#reading-list {
+  background-color: rgba(255, 255, 255, 0.04);
+  padding: 0 1rem;
 }
-
-header {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  justify-items: center;
-  grid-column: 1/3;
+.section {
+  color: white;
+  min-width: 100%;
+  min-height: 14rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  border-radius: 15px;
+  background-color: rgba(255, 255, 255, 0.1);
 }
-
-.technology {
-  color: rgb(23, 148, 28)
-}
-
-.business{
-  color: rgb(26, 22, 208)
-}
-
-.food {
-  color: rgb(238, 29, 29)
-}
-
-.travel {
-  color: rgb(172, 158, 34)
-}
-
-.world {
-  color: rgb(237, 129, 17)
-}
-
 </style>

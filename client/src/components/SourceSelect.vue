@@ -1,57 +1,55 @@
 <template lang="html">
   <div id="source-select">
     <h1>Select News Source</h1>
-    <br>
+    <br />
     <ul>
-      <li v-on:click="handleClick('guardian')">Guardian</li>
-      <li v-on:click="handleClick('nyt')">New York Times</li>
+      <li><router-link to="/add-article/guardian">Guardian</router-link></li>
+      <li><router-link to="/add-article/nyt">New York Times</router-link></li>
+    <router-view :getTitle='getTitle' ></router-view>
     </ul>
   </div>
-
 </template>
 
 <script>
-import {eventBus} from '../main'
+import { eventBus } from "../main";
 export default {
-  name: 'source-select',
-
-  methods: {
-    handleClick(source) {
-      eventBus.$emit('toggle-select-article-form', source)
-    }
-  }
-}
+  name: "source-select"
+};
 </script>
 
 <style lang="css" scoped>
-
 h1 {
+  color: #b242bc;
   font-size: 50px;
   text-align: center;
 }
 
 li {
+  background-color: rgba(255, 255, 255, 0.1);
   font-size: 50px;
   text-align: center;
-  font-family: 'IM Fell English', serif;
+  font-family: "IM Fell English", serif;
   list-style: none;
   cursor: pointer;
   border: 8px solid black;
   border-radius: 15px;
-  width: 40%;
+  width: 40rem;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 10px
+  margin-bottom: 10px;
+}
+
+li > a {
+  color: lightgray;
+  text-decoration: none;
 }
 
 li:hover {
-  background-color: #CDE1F9;
+  background-color: rgba(255, 255, 255, 0.25);
 }
 
 ul {
   margin-left: auto;
   margin-right: auto;
 }
-
-
 </style>

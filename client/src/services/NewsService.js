@@ -1,10 +1,8 @@
-const baseURL = 'http://localhost:3000/api/articles/'
-
+const baseURL = "https://news-aggregator-back.herokuapp.com/api/articles/";
 
 export default {
   getArticles() {
-    return fetch(baseURL)
-    .then(res => res.json())
+    return fetch(baseURL).then((res) => res.json());
   },
   postArticles(payload) {
     payload.title = payload.webTitle || payload.title;
@@ -13,33 +11,21 @@ export default {
     payload.section = payload.sectionId || payload.section;
     delete payload.sectionId;
 
-
-    if (!payload.source) {
-      payload.source = "guardian"
-    }
-    else if (payload.source) {
-      payload.source = "nyt"
-    }
-    // payload.source = (!payload.source) ? "guardian" : "nyt";
+    // if (!payload.source) {
+    //   payload.source = "guardian";
+    // } else if (payload.source) {
+    //   payload.source = "nyt";
+    // }
 
     return fetch(baseURL, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(payload),
-      headers: { 'Content-Type': 'application/json'}
-    })
-    .then(res => res.json())
+      headers: { "Content-Type": "application/json" },
+    }).then((res) => res.json());
   },
-  deleteArticle(id){
+  deleteArticle(id) {
     return fetch(baseURL + id, {
-      method: 'DELETE'
-    })
+      method: "DELETE"
+    }).then((res) => res.json())
   }
-  // extension? for status read / not-read
-  // updateArticle(id, payload) {
-  //   return fetch(baseURL + id, {
-  //     method: 'POST',
-  //     body: JSON.stringify(payload),
-  //     headers: { 'Content-Type': 'application/json'}
-  //   })
-  //   .then(res => res.json())
-}
+};
