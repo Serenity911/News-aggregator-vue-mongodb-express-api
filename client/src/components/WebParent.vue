@@ -98,7 +98,6 @@ export default {
     });
 
     eventBus.$on("remove-article", item => {
-      console.log(item);
 
       let findArticle = this.savedReadingListItems.find(
         ({ id }) => id === item.id
@@ -110,7 +109,6 @@ export default {
 
     eventBus.$on("toggle-show-article", item => {
       if (item) {
-        console.log("is it fetching?");
         this.fetchArticleGuardian(item);
       } else {
         this.articleToShow = null;
@@ -131,7 +129,6 @@ export default {
                 read: this.isArticleInList(element),
                 source: this.getSource(element)
               });
-              console.log(articlesToAdd);
             });
             this.articles[section] = articlesToAdd;
           })
@@ -150,7 +147,6 @@ export default {
     fetchArticleGuardian(item) {
       const title = this.getTitle(item);
       const source = this.getSource(item);
-      console.log("fetch article " + item);
       if (source === "guardian") {
         fetchAssistant
           .getArticle(source, item.apiUrl)
@@ -173,7 +169,6 @@ export default {
         return articles;
       } else {
         let filteredArticlesByCategory = articles.filter(article => {
-          console.log("is it in filter by categ", article);
 
           return article.section.toLowerCase() === category;
         });
@@ -184,7 +179,6 @@ export default {
       if (articles.length > 0) {
         const foundArticles = articles.filter(article => {
           const title = article.webTitle || article.title;
-          console.log("is it in filter by search term", article);
           return title.toLowerCase().includes(searchTerm);
         });
         return foundArticles;
@@ -192,9 +186,6 @@ export default {
     },
     addNewArticles(article) {
       if (this.savedReadingListItems.length > 0) {
-        console.log(
-          "add article but check existing articles removing duplicates"
-        );
 
         const mapOfExistingTitles = this.savedReadingListItems.map(
           item => item.title
@@ -206,7 +197,6 @@ export default {
           );
         }
       } else {
-        console.log("add article - reading list is empty so just add it");
         NewsService.postArticles(article).then(article =>
           this.savedReadingListItems.push(article)
         );

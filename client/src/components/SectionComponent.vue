@@ -55,18 +55,6 @@ export default {
       }
     }
   }
-  //   if (this.checkedArticles.includes(article)) {
-  //     return "Unselect";
-  //   } else {
-  //     return "Select";
-  //   }
-  // }
-  // handleSubmit(article) {
-  //     console.log(article);
-
-  //     eventBus.$emit("toggle-reading-list", article);
-  // }
-  // }
 };
 </script>
 

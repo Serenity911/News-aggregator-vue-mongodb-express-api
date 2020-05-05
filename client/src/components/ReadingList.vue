@@ -71,7 +71,6 @@ export default {
   computed: {
     areThereArticles: function() {
       return this.savedReadingListItems.length !== 0;
-      // console.log(this.filteredArticles.length !== 0);
     }
   },
   destroyed() {

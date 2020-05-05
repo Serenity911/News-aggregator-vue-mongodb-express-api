@@ -43,9 +43,7 @@ export default {
       }
     },
     handleShowArticle(article) {
-      console.log(article);
       if (article.source === "guardian") {
-        console.log("is it in the guardian");
         eventBus.$emit("toggle-show-article", article);
         this.$router.push({ name: "show-article" });
       }
@@ -55,18 +53,6 @@ export default {
       }
     }
   }
-  //   if (this.checkedArticles.includes(article)) {
-  //     return "Unselect";
-  //   } else {
-  //     return "Select";
-  //   }
-  // }
-  // handleSubmit(article) {
-  //     console.log(article);
-
-  //     eventBus.$emit("toggle-reading-list", article);
-  // }
-  // }
 };
 </script>
 
