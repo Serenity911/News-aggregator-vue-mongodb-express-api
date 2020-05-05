@@ -2,7 +2,6 @@
   <div id="select-article-form">
     <h1 class="heading" v-if="sourceSelected === 'guardian' " >Guardian</h1>
     <h1 class="heading" v-if="sourceSelected === 'nyt' " >New York Times</h1>
-    <input type="submit" name="button" value="Save selected Articles" :class="isClickable()" v-on:click="handleSubmit()" ></input>
 
     <div class="articles-sections" v-for="section in sections" >
       <h2>{{ section }}</h2>
@@ -29,13 +28,7 @@ export default {
     };
   },
 
-  props: [
-    "articles",
-    "sections",
-    "title",
-    "articleToShow",
-    "getTitle"
-      ],
+  props: ["articles", "sections", "title", "articleToShow", "getTitle"],
   created() {
     sections: {
       return this.sections;
@@ -99,7 +92,7 @@ body {
   display: flex;
   flex-direction: column;
   background-color: rgba(255, 255, 255, 0.04);
-  padding: 0 5rem;
+  width: 100vw;
 }
 
 .heading {
@@ -132,6 +125,8 @@ body {
 
 .articles-sections {
   border-radius: 15px;
-  margin: 0px 10% 0px 10%;
+  margin: 0px 2rem 0px 2rem;
+  display: flex;
+  flex-direction: column;
 }
 </style>

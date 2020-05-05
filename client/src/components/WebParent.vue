@@ -248,6 +248,7 @@ h1 {
   font-size: 3rem;
   text-align: center;
   padding: 0.5rem;
+  font-family: "IM Fell English", serif;
 }
 
 main {
