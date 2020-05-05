@@ -6,7 +6,7 @@
 
     <div class="articles-sections" v-for="section in sections" >
       <h2>{{ section }}</h2>
-       <section-component v-if="articles" :section="section" :articles="articles" :sourceSelected="sourceSelected" :getTitle="getTitle" :articleToShow='articleToShow' :getSource="getSource"/>
+       <section-component v-if="articles" :section="section" :articles="articles" :sourceSelected="sourceSelected" :getTitle="getTitle" :articleToShow='articleToShow'/>
     </div>
   </div>
 </template>
@@ -34,9 +34,8 @@ export default {
     "sections",
     "title",
     "articleToShow",
-    "getTitle",
-    "getSource"
-  ],
+    "getTitle"
+      ],
   created() {
     sections: {
       return this.sections;

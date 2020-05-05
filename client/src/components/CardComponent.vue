@@ -18,7 +18,7 @@
 import { eventBus } from "../main";
 export default {
   name: "card-component",
-  props: ["article", "articleToShow", "getTitle", "getSource"],
+  props: ["article", "articleToShow", "getTitle"],
   methods: {
     // contentCardClass(article) {
     //   if (article.read) {

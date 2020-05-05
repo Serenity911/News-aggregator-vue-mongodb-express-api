@@ -26,7 +26,7 @@
       </h2>
       <div class="section">
       <section class="card-wrapper" v-if="filteredArticles"  v-for="article in filteredArticles">
-        <card-component :article="article" :articleToShow='articleToShow' :getTitle="getTitle" :getSource="getSource"/>
+        <card-component :article="article" :articleToShow='articleToShow' :getTitle="getTitle" />
       </section>  
       </div>
 
@@ -46,7 +46,6 @@ export default {
     "filteredArticles",
     "allSections",
     "savedReadingListItems",
-    "getSource",
     "articleToShow",
     "getTitle"
   ],

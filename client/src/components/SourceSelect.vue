@@ -5,7 +5,7 @@
     <ul>
       <li><router-link to="/add-article/guardian">Guardian</router-link></li>
       <li><router-link to="/add-article/nyt">New York Times</router-link></li>
-    <router-view :getTitle='getTitle' :getSource="getSource"></router-view>
+    <router-view :getTitle='getTitle' ></router-view>
     </ul>
   </div>
 </template>
@@ -26,8 +26,6 @@ h1 {
 
 li {
   background-color: rgba(255, 255, 255, 0.1);
-  color: lightgray;
-
   font-size: 50px;
   text-align: center;
   font-family: "IM Fell English", serif;
@@ -39,6 +37,11 @@ li {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 10px;
+}
+
+li > a {
+  color: lightgray;
+  text-decoration: none;
 }
 
 li:hover {

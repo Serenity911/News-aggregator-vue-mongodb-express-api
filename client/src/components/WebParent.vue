@@ -4,10 +4,10 @@
       <h1>read://it</h1>
     </header>
     <main> 
-    <p id=nav>
+    <nav id=nav>
         <router-link :to="{name: 'select-source'}" > Add Article </router-link>
         <router-link :to="{name: 'reading-list'}"> Reading List </router-link>        
-    </p>
+    </nav>
     <router-view :sections='sections' :title='title' :articles='articles' :filteredArticles='filteredArticles' :allSections='allSections' :savedReadingListItems='savedReadingListItems' :articleToShow='articleToShow' :getSource='getSource' :getTitle='getTitle'></router-view>
 
     </main>
@@ -189,7 +189,6 @@ export default {
     },
     addNewArticles(article) {
       if (this.savedReadingListItems.length > 0) {
-        
         const mapOfExistingTitles = this.savedReadingListItems.map(
           item => item.title
         );
@@ -256,5 +255,30 @@ main {
   flex-direction: column;
   align-content: center;
   align-items: center;
+}
+
+nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background-color: rgba(255, 255, 255, 0.07);
+  padding: 1rem;
+  justify-items: center;
+  width: 100vw;
+  text-align: center;
+}
+nav > a {
+  text-decoration: none;
+  font-size: 3rem;
+  color: #b242bc;
+  width: 16rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #7a99ff;
+  border: 1px solid black;
+  padding: 0.5rem;
+}
+
+nav > a:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+
 }
 </style>
