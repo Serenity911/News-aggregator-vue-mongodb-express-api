@@ -109,9 +109,12 @@ export default {
     });
 
     eventBus.$on("toggle-show-article", item => {
-      // this.selectedArticle = item;
-      this.fetchArticleGuardian(item);
-      // this.selectedHeader = "readingList";
+      if (item) {
+        console.log("is it fetching?");
+        this.fetchArticleGuardian(item);
+      } else {
+        this.articleToShow = null;
+      }
     });
   },
   methods: {
@@ -125,7 +128,8 @@ export default {
             fetchedArticles.forEach(element => {
               articlesToAdd.push({
                 ...element,
-                read: this.isArticleInList(element)
+                read: this.isArticleInList(element),
+                source: this.getSource(element)
               });
               console.log(articlesToAdd);
             });
@@ -155,7 +159,7 @@ export default {
       }
     },
     getSource(item) {
-      return item.title ? "guardian" : "nyt";
+      return item.webTitle ? "guardian" : "nyt";
     },
     getTitle(item) {
       return item.title || item.webTitle;

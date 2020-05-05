@@ -3,7 +3,7 @@
               <!-- <div  :class="contentCardClass(article)" v-for="(article, index) in localArticles[section]" @mouseover.self="cardMouseOver(section + index)" @mouseleave.self="cardMouseLeave"> -->
         <section class="card-wrapper" v-for="(article, index) in articles[section]" >
                   <!-- <section  class="section--content" v-for="(article, index) in articles[section]" > -->
-          <card-component :article="article" :getTitle="getTitle"></card-component>
+          <card-component :article="article" :getTitle="getTitle" :getSource="getSource"></card-component>
         </section>
   </div>
 </template>
@@ -14,7 +14,14 @@ import CardComponent from "./CardComponent.vue";
 
 export default {
   name: "section-component",
-  props: ["section", "articles", "sourceSelected", "articleToShow", "getTitle"],
+  props: [
+    "section",
+    "articles",
+    "sourceSelected",
+    "articleToShow",
+    "getTitle",
+    "getSource"
+  ],
   components: {
     "card-component": CardComponent
   },
@@ -33,13 +40,13 @@ export default {
         eventBus.$emit("toggle-reading-list", article);
       }
     },
-    handleShowArticle(item) {
-      if (getSource(item) === "guardian") {
-        eventBus.$emit("toggle-show-article", item);
-      } else {
-        window.open(item.url);
-      }
-    },
+    // handleShowArticle(item) {
+    //   if (getSource(item) === "guardian") {
+    //     eventBus.$emit("toggle-show-article", item);
+    //   } else {
+    //     window.open(item.url);
+    //   }
+    // },
     checkStatusOfArticle(article) {
       if (article.read === true) {
         return "Remove from list";

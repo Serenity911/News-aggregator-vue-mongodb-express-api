@@ -26,7 +26,7 @@
       </h2>
       <div class="section">
       <section class="card-wrapper" v-if="filteredArticles"  v-for="article in filteredArticles">
-        <card-component :article="article" :articleToShow='articleToShow' :getTitle="getTitle"/>
+        <card-component :article="article" :articleToShow='articleToShow' :getTitle="getTitle" :getSource="getSource"/>
       </section>  
       </div>
 
@@ -105,13 +105,13 @@ export default {
     cardMouseLeave() {
       this.cardOverIndex = false;
     },
-    handleRead(item) {
-      if (item.source === "guardian") {
-        eventBus.$emit("toggle-show-article", item);
-      } else {
-        window.open(item.url);
-      }
-    },
+    // handleRead(item) {
+    //   if (item.source === "guardian") {
+    //     eventBus.$emit("toggle-show-article", item);
+    //   } else {
+    //     window.open(item.url);
+    //   }
+    // },
     itemSource(item) {
       if (item.source === "guardian") {
         return "Guardian";
@@ -175,8 +175,6 @@ form {
 select {
   height: 3em;
 }
-
-
 
 #reading-list {
   background-color: rgba(255, 255, 255, 0.04);

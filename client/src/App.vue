@@ -4,11 +4,6 @@
       href="https://fonts.googleapis.com/css?family=IM+Fell+English"
       rel="stylesheet"
     />
-    <!-- <p id=nav>
-        <router-link to="/add-article"> Add Article </router-link>
-        <router-link to="/reading-list"> Reading List </router-link>        
-        <router-link to="/read-article"> Read Article </router-link>
-    </p> -->
     <web-parent />
   </div>
 </template>

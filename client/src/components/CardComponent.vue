@@ -7,8 +7,9 @@
     <p>{{ getTitle(article)}}</p>
     <footer class="hoveredNav">
       <button  :value="article" v-on:click="addToReadingList(article)" type="button" name="select" value="select"><router-link to="/reading-list/" class="link"> {{checkStatusOfArticle(article)}}</router-link></button>
-      <button v-on:click="handleShowArticle(article)"><router-link to="/read-article/" class="link">Read</router-link></button>
-      <router-view :articleToShow='articleToShow'></router-view>
+      <button v-on:click="handleShowArticle(article)">Read</button>
+        <!-- <router-link to="/read-article/" class="link">Read</router-link> -->
+      <router-view :articleToShow='articleToShow' ></router-view>
     </footer>
   </div>
 </template>
@@ -17,7 +18,7 @@
 import { eventBus } from "../main";
 export default {
   name: "card-component",
-  props: ["article", "articleToShow", "getTitle"],
+  props: ["article", "articleToShow", "getTitle", "getSource"],
   methods: {
     contentCardClass(article) {
       if (article.read) {
@@ -42,7 +43,16 @@ export default {
       }
     },
     handleShowArticle(article) {
-      eventBus.$emit("toggle-show-article", article);
+      console.log(article);
+      if (article.source === "guardian") {
+        console.log("is it in the guardian");
+        eventBus.$emit("toggle-show-article", article);
+        this.$router.push({ name: "show-article" });
+      }
+      if (article.source === "nyt") {
+        // this.$router.push({ name: "reading-list" });
+        window.open(article.url);
+      }
     }
   }
   //   if (this.checkedArticles.includes(article)) {

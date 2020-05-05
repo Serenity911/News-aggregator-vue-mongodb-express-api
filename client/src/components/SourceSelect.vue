@@ -5,7 +5,7 @@
     <ul>
       <li><router-link to="/add-article/guardian">Guardian</router-link></li>
       <li><router-link to="/add-article/nyt">New York Times</router-link></li>
-    <router-view :getTitle='getTitle' ></router-view>
+    <router-view :getTitle='getTitle' :getSource="getSource"></router-view>
     </ul>
   </div>
 </template>
