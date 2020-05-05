@@ -265,20 +265,22 @@ nav {
   justify-items: center;
   width: 100vw;
   text-align: center;
+  margin-bottom: 3rem;
 }
 nav > a {
   text-decoration: none;
   font-size: 3rem;
   color: #b242bc;
-  width: 16rem;
+  width: 17rem;
   background-color: rgba(255, 255, 255, 0.1);
-  color: #7a99ff;
+  /* color: #7a99ff; */
+  color: lightgray;
   border: 1px solid black;
   padding: 0.5rem;
+  font-family: "IM Fell English", serif;
 }
 
 nav > a:hover {
-    background-color: rgba(255, 255, 255, 0.25);
-
+  background-color: rgba(255, 255, 255, 0.25);
 }
 </style>
